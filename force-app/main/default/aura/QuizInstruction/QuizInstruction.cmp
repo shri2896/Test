@@ -1,0 +1,62 @@
+<aura:component controller="Question_AnswerController" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    
+    <aura:attribute name="languageLst" type="List" />
+    <aura:attribute name="selectedLanguageID" type="String" />        
+    <aura:attribute name="showQuizQuestion" type="Boolean" default="false" />
+    <aura:attribute name="firstName" type="String" />
+    <aura:attribute name="lastName" type="String" />
+    <aura:attribute name="email" type="String" />
+    <aura:attribute name="showLanguage" type="Boolean" default="true"/>
+    <aura:attribute name="instructions" type="List" />
+    <aura:attribute name="hours" type="Integer" />
+    <aura:attribute name="minute" type="Integer" />
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />    
+
+    <aura:if isTrue="{!v.showLanguage eq false}" >        
+        <aura:if isTrue="{!v.showQuizQuestion eq false}" >                   
+            <lightning:card >               
+                <div class="slds-m-top_medium slds-m-left_medium slds-align_absolute-center">
+                    <div class="slds-m-top_medium slds-m-left_medium">
+                        <div><ui:outputRichText class="slds-m-top_medium " value="{!v.instructions}"/></div>                        
+                        <div class="slds-m-top_medium">
+                            <lightning:input type="text" label="Enter first Name " value="{!v.firstName}" required="true" />
+                        </div>
+
+                        <div class="slds-m-top_medium">
+                            <lightning:input type="text" label="Enter last Name" value="{!v.lastName}" required="true" />
+                        </div>
+
+                        <div class="slds-m-top_medium">
+                            <lightning:input type="text" label="Enter email" value="{!v.email}" required="true" />
+                        </div>                        
+
+                        <div class="slds-m-top_medium slds-m-left_medium ">
+                            <lightning:button label="Start" variant="brand" onclick="{!c.startQuiz}" />
+                        </div>
+                    </div>
+                </div>
+
+            </lightning:card >        
+            <aura:set attribute="else" >
+                <c:Question_Answer selectedLanguage="{!v.selectedLanguageID}" hours="{!v.hours}" minute="{!v.minute}" />
+            </aura:set>
+        </aura:if>
+        
+        <aura:set attribute="else" >
+            <lightning:card>
+                <center>
+                    <div class="slds-m-top_medium slds-m-left_medium " style="width: 200px;">
+                        <lightning:select aura:id="language" name="select1" label="Select any language." required="true" onchange="{!c.getSelectedLanguage}" disabled="false" value="{!v.selectedLanguageID}">
+                            <option value="None">None</option>        
+                            <aura:iteration items="{!v.languageLst}" var="lst" >
+                                <option value="{!lst.Id}"> {!lst.Name} </option>
+                            </aura:iteration>
+                        </lightning:select>                
+                    </div>
+                </center>
+            </lightning:card>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

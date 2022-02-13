@@ -1,0 +1,130 @@
+<aura:component controller="LightningObjectConfiguration" implements="force:appHostable">
+    
+    <aura:attribute name="sObject" type="list" />
+    <aura:attribute name="column" type="list" default = "[]"/>		
+    <aura:attribute name="allFileds" type="list" /><!-- Use for assign all fields -->		
+    <aura:attribute name="recordName" type="String" />
+    <aura:attribute name="listViewRecords" type="list" />		
+    <aura:attribute name="color" type="String" />
+
+    <!--Testing-->
+    <aura:attribute name="allFieldsData" type="Object[]" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+    <div >
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="2">
+                <lightning:card title=""  >
+                    <div>					
+                        <div class="setInline ">
+                            <lightning:buttonIcon iconName="utility:custom" variant="neutral"  size="large"/>
+                            Templates
+                        </div>
+                        <div class="setInline setAlignmentOfButton slds-p-right_medium">
+                            <lightning:button name="New" label="New" variant="brand" />
+                        </div>
+                        
+                        <div class="slds-box slds-p-around_small slds-p-top--large">		
+                            <div class="slds-truncate" title="Cloudhub">
+                            	<table class="slds-table slds-table_cell-buffer slds-table_bordered ">
+                                    <tbody>                                    	
+		                                <aura:iteration items="{!v.listViewRecords}" var="rec" indexVar="index">	
+		                                	<tr class="slds-box">		                                		
+		                                        <div class="slds-p-top_x-small slds-p-left_small slds-size_1-of-2" >
+		                                        	<a href="javascript:void(0)" name="{!rec.recId + ',' + rec.recordName + ',' + rec.objName + ',' + rec.column}" value="{!rec.field}" onclick="{!c.getSelectedRecord}"> {!rec.recordName} </a>
+		                                        </div>
+			                                </tr>
+		                                </aura:iteration>          		                            
+		                        	</tbody>
+	                       		</table>
+                            </div>								      	
+                        </div>
+                    </div>
+                </lightning:card>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem size="10" >
+                <div>
+                    <lightning:card title="List View Record Configuration" >
+                        <div class="slds-p-left_large">
+                            <lightning:buttonIcon iconName="utility:standard_objects" variant="neutral" alternativeText="Object changeInObjectList" size="large"/>
+                        </div>
+                        
+                        <div class="setInline slds-p-left_large slds-p-top_medium" >				
+                            <lightning:select label="Select Object" name="" aura:id="object" onchange="{!c.changeInObjectList}">		
+                                <aura:iteration items="{!v.sObject}" var="obj" >
+                                    <option value="{!obj.name}"> {!obj.label} </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        
+                        <div class="setInline slds-p-left_large" >
+                            <lightning:input type="text" label="Record Name" name="" value="{!v.recordName}"  required="true" />
+                        </div>
+                        
+                        <div class="setInline slds-p-left_large" >
+                            <lightning:select label="Select Column" name="" aura:id="columnVal" onchange="{!c.changeColumn}">												
+                                <option value="1" > 1 </option>		
+                                <option value="2" > 2 </option>
+                                <option value="3" > 3 </option>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-grid">                        	
+                            <aura:iteration items="{!v.allFieldsData}" var="columnList" indexVar="index">                            	
+                                <div class="slds-col slds-p-top_large">
+                                    <table >
+                                        <tbody>
+                                            <aura:iteration items="{!columnList}" var="col" indexVar="colIndex">
+                                                <tr class="slds-box slds-m-bottom_large">
+                                                    <div class="slds-grid slds-size_small">
+                                                        <div class="slds-size_1-of-3 slds-align_absolute-center slds-p-top_large" >
+                                                            <!-- <aura:if isTrue="{!col.isFirst}"> -->
+                                                            <aura:if isTrue="{!colIndex eq 0}">
+                                                            	<lightning:buttonIcon iconName="utility:add" variant="neutral" alternativeText="Add" onclick="{!c.addField}" value="{!index}" />
+                                                                <aura:set attribute="else" >
+                                                                    <lightning:buttonIcon iconName="utility:close" alternativeText="Subtract" onclick="{!c.subtractField}" value="{!index + '___' + colIndex}"/>
+                                                                </aura:set>
+                                                            </aura:if>
+                                                        </div>
+                                                        
+                                                        <aura:if isTrue="{! not(col.duplicateValue)}" >                                                        						
+	                                                        <div class="slds-size_2-of-2 slds-p-top_xx-small">                                                        	
+	                                                            <lightning:select aura:id="getField" value="{!col.value}" class="slds-size_small"><!-- auraErrorBox -->
+	                                                                <aura:iteration items="{!v.allFileds}" var="fld">
+	                                                                    <option value="{!fld.name }">{!fld.label}</option>	
+	                                                                </aura:iteration>
+	                                                            </lightning:select>
+	                                                        </div>
+
+	                                                        <aura:set attribute="else" >
+	                                                        	<div class="slds-size_2-of-2 slds-p-top_xx-small slds-border_bottom slds-has-error" div="divId">                                                        	
+		                                                            <lightning:select aura:id="getField" value="{!col.value}" class="slds-size_small">
+		                                                                <aura:iteration items="{!v.allFileds}" var="fld">
+		                                                                    <option value="{!fld.name }">{!fld.label}</option>	
+		                                                                </aura:iteration>
+		                                                            </lightning:select>
+	                                                        	</div>
+	                                                        </aura:set>
+	                                                    </aura:if>
+                                                    </div>
+                                                </tr>
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:iteration>                           
+                        </div>				
+
+                        <div class="slds-p-left_large slds-m-top_xx-large">
+				            <lightning:button label="Save" variant="brand" onclick="{!c.saveRecord}" />
+				        </div>
+
+                    </lightning:card>							                
+
+                </div>                     
+
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

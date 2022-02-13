@@ -1,0 +1,382 @@
+<!--
+* @ Description : Child component of Question_Answer component
+* @ Author : Shrikant Mittal
+* @ Date : 17-07-19
+ -->
+
+<aura:component controller="Question_AnswerController">
+
+	<aura:attribute name="selectedLanguage" type="String" />
+	<aura:attribute name="questionList" type="List" />
+	<aura:attribute name="queoptions" type="Object" />	
+	<aura:attribute name="queToShow" type="String" />
+	<aura:attribute name="currentQueNo" type="Integer" />
+	<aura:attribute name="isCheck" type="Boolean" />
+	<aura:attribute name="userAnswer" type="List" />
+	<aura:attribute name="options" type="Object" />		
+	<aura:attribute name="quizResult" type="Boolean" default="false" />
+	<aura:attribute name="totalTime" type="String" />
+	<aura:attribute name="hour"  type="Integer" default="0"/>
+	<aura:attribute name="minute"  type="Integer" default="29"/>
+	<aura:attribute name="second"  type="Integer" default="60"/> 
+	
+
+	<aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+	<aura:handler name="confirmation" event="c:QuestionModelEvent" action="{!c.getConfirmation}" />
+	<aura:handler name="sendSelectedQuestion" event="c:QuestionModelEvent" action="{!c.setSelectedQuestion}" />
+	 
+	<aura:registerEvent name="totalQuestion" type="c:QuestionModelEvent" />
+	 
+	<aura:if isTrue="{!v.quizResult eq false}" > 	
+		<aura:if isTrue="{!v.queoptions.length > 0}" >
+			<center>
+				<div class="slds-m-top_large">						
+					<div class="slds-grid" >
+						<div class="slds-col slds-m-left_medium slds-m-top_small setTextFormating" >							
+							Question {!v.currentQueNo} / {!v.questionList.length}
+						</div>
+
+						<div class="slds-col" >
+							<lightning:button label="Navigate to question"  variant="brand" onclick="{!c.allQuestionPanel}" /> 
+						</div>
+
+						<div class="slds-col slds-m-right_medium setTextFormating" >
+							<div class=""> {!v.totalTime} </div>
+							<div class="slds-m-top_small">Time : {!v.hour} : {!v.minute} : {!v.second}</div>
+						</div>			
+					</div>
+			
+			
+					<div class="slds-box slds-box_small slds-m-top_medium slds-m-left_medium " style="width: 70%;" >
+						<div class="slds-text-heading_medium slds-m-top_x-large slds-m-left_medium font-family: setQueFont" >
+							<ui:outputRichText aura:id="outputRT" value="{!v.queToShow.Question__c}" />
+						</div>
+					
+						<div>		
+							<aura:iteration items="{!v.queoptions}" var="option" indexVar="index">			
+								<div class="slds-m-left_medium slds-m-top_medium slds-box setOptionAlignment">
+									<aura:if isTrue="{!v.queToShow.Question_has_single_ans__c eq True}" >
+										<aura:if isTrue="{!option.isChecked eq true}" >
+											<div>
+												<div style="display: inline-block">
+													<lightning:input type="radio" id="{!option.Name}" value="{!option.Name}" name="options"  checked="true" onchange="{!c.getSelectedValue}" />
+												</div>
+												<div style="display: inline-block">
+													<lightning:formattedRichText value="{!option.Name}"></lightning:formattedRichText>	
+												</div>
+											</div>											
+											
+											<aura:set attribute="else" >
+												<div>
+													<div style="display: inline-block">
+														<lightning:input id="{!option.Name}" type="radio" value="{!option.Name}" name="options" checked="false" onchange="{!c.getSelectedValue}" ></lightning:input>
+													</div>
+													<div style="display: inline-block">
+														<lightning:formattedRichText value="{!option.Name}"></lightning:formattedRichText>	
+													</div>
+												</div>
+											</aura:set>
+										</aura:if> 							
+										<aura:set attribute="else" >
+											<div >
+												<div style="display: inline-block">
+													<lightning:input id="{!option.Name}" type="checkbox" aura:id="chkboxValue" name="options" value="{!option.isChecked}" checked="{!option.isChecked}" onchange="{!c.getSelectedValue}"/>											
+												</div>											
+												<div style="display: inline-block">
+													<ui:outputRichText aura:id="chkbox" value="{!option.Name}" />
+												</div>
+											</div>
+										</aura:set>
+									</aura:if>									
+								</div>
+
+							</aura:iteration> 
+							
+						</div>
+
+						<div class="slds-align_absolute-center">
+							<lightning:button label="Previous" variant="brand" class=" slds-m-top_large" aura:id="btnPrevious" onclick="{!c.previousQuestion}" />
+							<lightning:button label="Next"  variant="brand" class="slds-m-top_large" aura:id="btnNext" onclick="{!c.nextQuestion}"/>
+							<lightning:button label="Submit" variant="brand" class="slds-m-top_large" aura:id="btnSubmit" disabled="false" onclick="{!c.onsubmit}"/>
+						</div>					
+					</div>					
+				</div>
+			</center>
+			<div aura:id="showConfirmationDialog" /> 
+			<div aura:id="questionPanel" />
+		</aura:if>
+
+		<aura:set attribute="else" >
+			<c:QuizResult questionCount="{!v.questionList.length}" answeredQuestion="{!v.userAnswer}" />
+		</aura:set>
+	</aura:if>
+</aura:component>
+
+
+
+
+
+
+
+
+
+<!-- 
+-> Which two quaries can a developer use in a visualforce controller to protect against SOQL injection vulnerabilities?
+
+ans :-
+1) String qryName = String.escapeSingleQuotes(name);
+String qryString = 'SELECT ID from Contact Where Name LIKE \ '%' + qryName + '%\'';
+List<Contact> queryResult = Database.query(qryString);,
+String qryName = '%' + Name + '%';
+String qryString = 'SELECT Id from Contact WHERE Name LIKE :qryName';List<Contact> queryResult = Database.query(qryString);
+
+
+String qryName = '%' + String.enforceSecurityChecks(name) + '%';
+String qryString = 'SELECT Id FROM Contact WHERE Name Like :qryName';
+List<Contact> queryResult = Database.query(qryString);
+
+String qryString = 'SELECT Id from Contact WHERE Name LIKE \'%' + name + '%\'';
+List<Contact> queryResult = Database.query(qryString);
+
+
+
+-> An Apex trigger fails because it exceeds governor limits.
+	Which two techniques should a developer use to resolve the problem?
+	Choose 2 answers.
+
+ans :- Use Maps to reference related records.,Use Lists for all DML operations.
+
+-> Poetential home buyers working with a real estate company can make offers on multiple properties that are listed with the real estate company. Offer amounts can be modified; however, the property that has the offer cannot be modified after the offer is placed.
+What should be done to associate offers with properties in the schema for the organization?
+
+		Create master-detail relationship in the Contact object to both the Property and offer custom objects.
+		Create a lookup relationship in the Property custom object to the offer custom object.
+ans :- Create a master-detail relationship in the offer custom object to the property custom object.
+		Create a lookup relationship in the offer custom object to the property custom object.
+
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+-> 
+19	What are two benefits of the Lightning Component framework?
+	Choose 2 answers
+
+	It Provides an event-driven architecture for better decoupling between components.
+	It allows faster PDF generation with lightning components.
+	It simplifies complexity when building pages, but not applications.
+	It Promotes faster development using out-of-the-box components that are suitable for desktop and mobile devices.
+
+20 What is the debug output of the following Apex Code?
+	Decimal theValue;
+	System.debug(theValue);
+
+	Undefined
+	0
+	null
+	0.0
+
+21 Given the code below, what can be done so that recordCount can be accessed by a test class, but not by a non-test class?
+	public class MYController{
+		private Integer recordCount;
+	}
+
+	Add the SeeAllData annotation to the test class.
+	Add the TestVisible annotation to recordCount.
+	Change recordCount from private to public.
+	Add the TestVisible annotation to the MyController class.
+
+22 A developer needs to save a list of existing Account records named myAccounts to the database, but the records do not contain Salesforce Id values. Only the value of a custom text field configured as External ID with an API name of Foreign_Key__c is known.
+	Which two statements enable the developer to save the records to the database without an Id?
+
+	Database.upsert (myAccounts, Foreign_Key__c);
+	Database.upsert(MyAccounts).Foreign_key__c;
+	Upsert myAccounts(Foreign_key__c);
+	Upsert myAccounts Foreign_key__c;
+		
+23 A developer is notified that a text field is being automatically populated with invalid values. However, this should be prevented by a custom validation rule that is in place.
+	What could be causing this?
+
+	The field is being populated by a workflow field update.
+	A DML exception us occurring during the save order of execution.
+	The field is being populated by a before trigger.
+	The user belongs to a permission set that suppresses the validation rule.
+
+24 How can a developer set up a debug log in a specific user?
+
+	Set up a trace flag for the user, and define a logging level and time period for the trace.
+	Ask the user for access to their account credentials, log in as the user and debug the issue.
+	Create Apex code that logs code actions into a custom.
+	It is not possible to setup debug logs for users other than yourself.
+
+25 A developer needs to update an unrelated object when a record gets saved.
+	Which 2 trigger types should the developer create?
+	Choose 2 answers
+
+	after insert
+	after update
+	before update
+	before insert
+
+
+ 26 What can be used to delete components from production?
+	
+ A change set deployment with the delete option checked
+ An ant migration tool deployment with a destructiveChanges XML file and the components to delete in package.xml field
+ A change set deployment with a destructiveChanges XML file
+ An ant migration tool deployment with a destructiveChanges XML file and an empty package.xml file.
+
+
+ 27 Given the code below, which three statements can be used to create the controller variable?
+	Public class AccountListController{
+		public List<Account> getAccounts(){
+			return controller.getRecords();
+		}
+	}
+	Choose 3 answers
+	
+	ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.getQueryLocator('SELECT Id from Account'));
+	ApexPages.StandardController controller = new ApexPages.StandardController([SELECT Id from Account]);
+	ApexPages.StandardController controller = new ApexPages.StandardController(Database.getQueryLocator('SELECT Id from Account'));
+	ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.query('SELECT Id from Account'));
+	ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.getQueryLocator(['SELECT Id from Account']));
+
+
+28 	Which three statements are true regarding the @isTest annotation?
+	Choose 3 answers
+
+	Products and pricebooks are visible in a test even if a class is annotated @isTest(SeeAllData=false).
+	A method annotated @isTest (SeeAllData=false) in a class annotated @isTest (SeeAllData=true) has access to all org data.
+	A method annotated @isTest (SeeAllData=false) in a class annotated @isTest (SeeAllData=false) has access to all org data.
+	Profiles are visible in a test even if a class is annotated @isTest(SeeAllData=false).
+	A class containing test methods counts toward the Apex code limit regardless of any @isTest annotation.
+
+29 Candidates are reviewed by four separate reviewers and their comments and scores which range from 1 (lowest) to 5 (highest) are stored on a review record that is a detail record for a candidate.
+	What is the best way to indicate that a combined review score of 15 better is required to recommend that the candidate come in for an interview?
+
+	Use a validation Rule on a total score field on the candidate record that prevents a recommended field from being true if the total score is less than 15.
+	Use a workflow Rule to calculate the sum of the review scores and send an email to the hiring manager when the total is 15 or better.
+	Use visual workflow to set a recommended field on the candidate whenever the cumulative review score is 15 or better.
+	Use a Rollup Summary field to calculates the sum of the review scores, and store this in a total score field on the candidate.
+
+30 A developer needs to include a visualforce page in the detail section of a page layout for the Account object, but does not see the page as an available option in the Page Layout Editor.
+   Which attribute must the developer include in the <apex:page> tag to ensure the visualforce page can be embedded in a page layout?
+
+   controller="Account"
+   extensions="AccountController"
+   standardController="Account"
+   action="AccountId"
+
+////////////////////////////////////////////////////////////////////////////
+
+
+String qryName = '%' + String.enforceSecurityChecks(name) + '%';
+String qryString = ' Select Id from Contact WHERE Name Like : qryName';
+List<Contact> queryResult = Database.query(qryString);
+
+
+String qryName = '*' + Name + '*';
+String qryString = 'SELECT Id from Contact WHERE Name LIKE :qryName';
+List<Contact> queryResult = Database.query(qryString);
+
+
+
+
+		A developer is creating an enha
+
+Create a lookup relationship to indicate that a person has an employer.
+Create a master-detail relationship to indicate that a person has an employer
+Create a junction object to relate many people to many employer through master-detail relationships.
+Create a junction object to relate many people to many employer through lookup relationships.
+
+
+11 Use SOQL syntax to find the related Accounts Name field.
+	Use the {!Contact.Account.Name} Merge field syntex.
+	Use the additional standard controller for Accounts.
+	Use additional Apex logic within the controller to query for the Name field.
+
+
+10 The Test Suite Run panel of the Developer Console
+	The Apex classes setup page
+	The Apex Test execution pages
+	The Tests tab of the Developer Console	
+
+9 	LastName
+	name
+	AccountId
+	FirstName
+
+8 	Creating a lookup filter
+	Adding an error to a field in a before trigger
+	Sending an email alert using a workflow rule.
+	Handling an exception in Apex
+	Adding a validation rule.
+
+	to which primitive
+7 	Text
+	Blob
+	Object
+	String
+
+
+6	Which 3 statements are accurate about variable scope.?
+
+	Parallel blocks can reuse the same variable name.
+	A sub-block can reuse a parent block's variable name if it is static.
+	A variable can be declared at any point in a block
+	A variable must be declared before it can be referenced in a block.
+	A sub-block can reuse a parent block's variable name if it is not static.
+
+	Given the code block
+5 	4
+	2
+	10
+	8
+
+
+4	Which two statement can a developer use to throw a custom exception of type MissingFieldValueException
+
+
+	throw (MissingFieldValueException, 'Problem occured');
+	throw new MissingFieldValueException('problem occured');
+	throw new MissingFieldValueException();
+	throw Exception(new MissingFieldValueException());
+
+3	Account acct = [Select Id from Account Limit 1]; 
+	Given the code above, how can a developer get the type of object from acct?
+	
+	Call "acct.getSObjectType()"
+	Call "Account.getSObjectType()"
+	Call "Account.SObjectType".
+	Call "acct.SObjectType".
+
+
+2	A developer want multiple test classes to use the same set of test data. 
+
+	Define variables for test records in each test class.
+	Create a Test Setup method for each test class.
+	Use the SeeAllData=true annotationin each test class.
+	Reference a test utility class in each test class
+
+1	In which 2 trigger types can a developer modify the new sObject records that are obtained by the trigger.new context.?
+
+	after insert
+	after update
+	before update
+	before insert 
+
+-->
+
+<!-- 
+	Which two quaries can a developer use in a visualforce controller to protect against SOQL injection vulnerabilities?
+	An Apex trigger fails because it exceeds governor limits. Which two techniques should a developer use to resolve the problem? Choose 2 answers.
+	From which two location can a developer determine the overall code coverage for a sandbox?
+	A developer needs to update an unrelated object when a record gets saved. Which 2 trigger types should the developer create? Choose 2 answers
+
+ -->
+
+<!-- 
+ApexPages.StandardController controller = new ApexPages.StandardController([SELECT Id from Account]);
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.query('SELECT Id from Account'));
+ApexPages.StandardSetController controller = new ApexPages.StandardSetController(Database.getQueryLocator(['SELECT Id from Account']));
+ -->

@@ -1,0 +1,37 @@
+<aura:component controller="LightningObjectConfiguration" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:appHostable"> 
+	
+    <!-- <aura:attribute name="recordId" type="String" default="0016F00002uK7qDQAS" /> -->	
+	<aura:attribute name="Records" type="list" />
+	
+	<aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+	<aura:attribute name="recordId" type="String" default="00B6F00000Fz41A" />
+    <lightning:button label="Edit Record" onclick="{!c.edit}"/>
+	
+</aura:component>
+
+<!-- 
+    <aura:attribute name="myField" type="String" default="First Name"/>
+   
+    <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+           <lightning:recordEditForm aura:id="recordViewForm" 
+                                     recordId="0035800001ZXlPn"
+                                     objectApiName="Contact">
+            <lightning:messages />
+            <lightning:inputField aura:id="idField" fieldName="Fields__c" onchange="{!c.myRefresh}"  />
+            <aura:if isTrue="{!v.myField == 'First Name'}">
+					 <lightning:inputField fieldName="FirstName" />
+            </aura:if>
+            <aura:if isTrue="{!v.myField == 'Last Name'}">
+                  <lightning:inputField fieldName="LastName" />
+            </aura:if>
+            <aura:if isTrue="{!v.myField == 'Birth Date'}">
+                  <lightning:inputField fieldName="Birthdate" />
+            </aura:if>
+            <lightning:inputField fieldName="Phone" />
+            <lightning:button aura:id="submit" type="submit" label="Update record" class="slds-m-top_medium" />
+            </lightning:recordEditForm>
+    </div>  
+  
+
+ -->

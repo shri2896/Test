@@ -1,0 +1,29 @@
+.THIS .setQueFont{
+	font-style: oblique;
+    font-family: inherit;
+    font-size: x-large;
+    text-align: left;
+}
+
+.THIS .setQuestionAlignment{
+    font: caption;
+    font-family: sans-serif; 
+    font-size: large; 
+    display:inline-block; 
+    position : absolute; left : 20%;
+}
+
+.THIS .setOptionAlignment{
+    text-align: left;
+}
+
+.THIS .setTimeAlignment{
+    position: absolute; 
+    right: 1%
+}
+
+.THIS .setTextFormating{
+    font-size: initial;
+    font-family: sans-serif;    
+    font: caption;
+}

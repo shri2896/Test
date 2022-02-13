@@ -1,0 +1,10 @@
+.THIS .redNavigation{
+    color: red;
+}
+.THIS .headBorder{
+    border-bottom: 0.1px solid rgb(0 0 0 / 15%);
+}
+.THIS .slds-is-today{
+    background-color: red;
+    color: white;
+}

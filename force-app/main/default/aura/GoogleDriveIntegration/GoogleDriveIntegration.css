@@ -1,0 +1,8 @@
+.THIS .setFloat{
+	display: inline-block;
+}
+.THIS .align-Center{
+	text-align: center;
+    font-size: 20px;
+    font-family: inherit;
+}

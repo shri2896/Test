@@ -1,0 +1,83 @@
+<aura:component controller="GetAccountRecordsForLightningComponent" >
+    
+    <aura:attribute name="headerText" type="String" />
+    <aura:attribute name="rowIndex" type="String" />
+    <aura:attribute name="acc" type="Account[]" />    
+    <aura:attribute name="addMultipleRow" type="Integer" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="DeleteRowEvt" event="c:CreateNewAccountRecordEvent" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddRowEvt" event="c:CreateNewAccountRecordEvent" action="{!c.addNewRow}"/> 	 
+    <aura:handler name="cloneRowEvt" event="c:CreateNewAccountRecordEvent" action="{!c.addCloneRow}" />
+    
+    <aura:registerEvent name="updatedData" type="c.CreateNewAccountRecordEvent" />
+    
+    <div class="demo-only" style="height: 50%; width: 50%;">
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+          	<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"/>                                          
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> {!v.headerText} </h2>
+          </header>
+            
+            <article class="slds-card cardSize">
+                <div class="slds-card__header slds-grid">                      
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-contact" >
+                                
+                            </span>
+                        </div>
+                        
+                        <div class="slds-grid slds-gutters">                                            
+                            <div class="slds-col"><lightning:input label="Add" min="1" max="10" type="number" messageWhenRangeOverflow="Max row is 10" messageWhenRangeUnderflow="Minimum row value is 1" value="{!v.addMultipleRow}" /></div>
+                            <div class="slds-col">Rows(max 10)</div>
+                            <div class="slds-col"><lightning:button label="Go" name="addrow" variant="brand" onclick="{!c.addMultipleRow}"/></div>
+                            <div class="slds-col"><lightning:button label="Save" name="addrow" variant="brand" onclick="{!c.saveData}" /></div>
+                        </div>
+                    </header>                    
+                </div>
+                
+                <div class="slds-card__body">
+                    
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate">S.No</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Account Name">Account Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Account Number">Account Number</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Phone">Phone</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Action">Action</div>
+                                </th>
+                            </tr>
+                        </thead>   
+                        <tbody>                                  
+                            <aura:iteration items="{!v.acc}" var="item" indexVar="index">
+                                 <c:dynamicRowItem AccountInstance="{!item}" rowIndex="{!index}" />
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                                                     
+                </div>
+                <footer class="slds-card__footer">
+                    <button class="slds-button slds-button_neutral" onclick="{!c.close}" >Cancel</button>           			
+                </footer>    
+            </article>
+              
+            </div>
+          
+       
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+</aura:component>

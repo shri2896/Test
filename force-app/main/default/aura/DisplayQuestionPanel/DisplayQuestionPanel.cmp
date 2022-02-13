@@ -1,0 +1,78 @@
+<aura:component>
+
+    <aura:attribute name="questionList" type="List" />
+    <aura:attribute name="unAnsweredQuestion" type="List" />
+    <aura:attribute name="answeredQuestion" type="List" />    
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <aura:registerEvent name="sendSelectedQuestion" type="c:QuestionModelEvent" />
+
+    <div style="height:640px">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large">
+          <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"/>              
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select any question</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-box slds-align_absolute-center">
+                    <lightning:tabset selectedTabId="all_Question">
+                        <lightning:tab label="{! 'All_Question (' + v.questionList.length + ')'}"  id="all_Question">
+                            <aura:iteration items="{!v.questionList}" var="que" indexVar="index">
+                                    <div class="slds-grid">
+                                        <div class="slds-m-top_medium slds-m-left_small" >
+                                            {!index+1}
+                                        </div>
+            
+                                        <a href="javaScript:void(0);" onclick="{!c.getSelectedQue}" data-attriVal="{!que.Id}">
+                                            <div class="slds-m-top_medium slds-m-left_small" > <ui:outputRichText aura:id="outputRT" value="{!que.Question__c}" /> </div>
+                                        </a>
+                                    </div>
+                                </aura:iteration>
+                        </lightning:tab>
+                        
+                        <lightning:tab label="{! 'Answered_Question (' + v.answeredQuestion.length + ')'}" id="answered_Question">
+                            <aura:if isTrue="{!v.answeredQuestion.length > 0}" >
+                                <div class="slds-box slds-m-top_medium">
+                                    <aura:iteration items="{!v.answeredQuestion}" var="que" indexVar="index">                    
+                                        <div class="slds-m-top_medium slds-m-left_medium slds-grid">                    
+                                            <div style="display: inline-block">{!index+1}. </div>                                        
+                                            
+                                            <div style="display: inline-block;" class="slds-m-left_medium" >
+                                                <a href="javaScript:void(0);" onclick="{!c.getSelectedQue}" data-attriVal="{!que.Id}"> <ui:outputRichText aura:id="outputRT" value="{!que.Question__c}" /> </a>
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                            </aura:if>
+                        </lightning:tab>
+                        
+                        <lightning:tab label="{!'UnAnswered_Question (' + v.unAnsweredQuestion.length + ')'}" id="unanswered_Question">
+                            <aura:if isTrue="{!v.unAnsweredQuestion.length > 0}" >
+                                    <div class="slds-box slds-m-top_medium">
+                                        <aura:iteration items="{!v.unAnsweredQuestion}" var="que" indexVar="index">                    
+                                            <div class="slds-m-top_medium slds-m-left_medium slds-grid">                    
+                                                <div style="display: inline-block">{!index+1}. </div>                                        
+                                                
+                                                <div style="display: inline-block;" class="slds-m-left_medium" >
+                                                    <a href="javaScript:void(0);" onclick="{!c.getSelectedQue}" data-attriVal="{!que.Id}"> <ui:outputRichText aura:id="outputRT" value="{!que.Question__c}" /> </a>
+                                                </div>
+                                            </div>
+                                        </aura:iteration>
+                                    </div>
+                                </aura:if>
+                        </lightning:tab>
+
+                    </lightning:tabset>                               
+                </div>
+            </div>
+            <footer class="slds-modal__footer">                                          
+                <lightning:button label="Cancel" onclick="{!c.cancel}" />
+            </footer>
+          </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      </div>
+</aura:component>

@@ -1,0 +1,49 @@
+<template>
+    <div>      
+        <!-- <label class="slds-form-element__label" for="date-input-id-default">{label}</label>       -->
+        <!-- <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">            
+            <c-input-date style-class="slds-input " value={value} format={formatSpecifier} ondatechange={handleManualInput} onfocus={handleInputFocus}></c-input-date>            
+            <button onclick={handleClearDate} class="clear-button slds-input__icon slds-input__icon_right slds-button slds-button_icon slds-hide">
+            <lightning-icon icon-name="utility:clear" size="x-small" class="slds-button__icon" ></lightning-icon>
+            <span class="slds-assistive-text">Clear</span>
+            </button>
+            <lightning-icon icon-name="utility:event" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" ></lightning-icon>        
+        </div> -->
+    
+        <div class="slds-datepicker slds-dropdown datepicker-dropdown picker-display-table clear-user-agent-styles " role="dialog">
+            <div class="slds-datepicker__filter slds-grid">
+                <div class="slds-datepicker__filter_month slds-grid slds-grid_align-spread slds-grow">
+                    <div class="slds-align-middle">                    
+                        <lightning-button-icon onclick={goToPreviousMonth} variant="bare" class="red-Icon no-focus" icon-name="utility:chevronleft"  alternative-text="Previous Month" title="Previous Month"></lightning-button-icon>
+                    </div>
+                    <h2 class="slds-align-middle current-month" aria-live="assertive" aria-atomic="true">{monthName}</h2>            
+                    <div class="slds-align-middle">                    
+                        <lightning-button-icon onclick={goToNextMonth} class="red-Icon no-focus" variant="bare" icon-name="utility:chevronright"  alternative-text="Next Month" title="Next Month"></lightning-button-icon>                   
+                    </div>
+                </div>  
+            </div>  
+            <table class="maintable datepicker__month picker-table datepicker-table" role="grid" aria-labelledby="month" >
+                <thead>
+                    <tr id="weekdays1">                    
+                        <template for:each={getTrimWeekDayName} for:item="day">
+                            <th key={day.key} data-key={day.key} for:index={day.index} scope="col" class="dayOfWeek">
+                                <abbr title={day.fullName}>{day.shortName}</abbr>
+                            </th>
+                        </template>            
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={checkWeekend} for:item="week">            
+                        <tr class={week.class} key={week.weekKey}>
+                            <template for:each={week.days} for:item="day">
+                                <td key={day.key} data-key={day.key} role="gridcell" class={day.tdClass} aria-selected={day.ariaSelected} aria-disabled={day.ariaDisabled} >
+                                    <span tabindex="-1" role="button" class="slds-day">{day.label}</span>
+                                </td>
+                            </template>
+                        </tr>            
+                    </template>                    
+                </tbody>
+            </table>
+        </div>      
+    </div>
+  </template>

@@ -1,0 +1,10 @@
+<aura:event type="COMPONENT">
+    
+    <aura:attribute name="updatedData" type="Account[]" />				<!-- Register in showAccountRecords  and handel in ComponentBar....  provide new record list after deletion of the record !-->
+    <aura:attribute name="CreateNewAccountRecord" type="Account[]" /> 	<!-- Register in showAccountRecords  and handel in ComponentBar.....  use for create new record and return updated list of account !-->
+    <aura:attribute name="updateContactList" type="Contact[]" />		<!-- Register in NewContactRecordComponent and handel in ContactRecordModel & Lightningbarcomponent.....  it will refresh the contact list after insert new contact !-->
+    <aura:attribute name="afterDeleteUpdateContact" type="Account[]" /> <!-- Register in ContactRecordModel and handel in LightningComponentBar.....  after deletion update count of related child records !-->
+	<aura:attribute name="indexVar" type="Integer" description="Use For Delete Row" />
+    <aura:attribute name="cloneRowEvt" type="Account" description="use in clone row.. register in  dynamicRowItem and handler in BulkAccount" />
+    
+</aura:event>

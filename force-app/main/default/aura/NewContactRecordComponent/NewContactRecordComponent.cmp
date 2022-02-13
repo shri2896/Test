@@ -1,0 +1,32 @@
+<aura:component Controller="GetAccountRecordsForLightningComponent">
+	
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="headerText" type="String" />
+    <aura:attribute name="contactRec" type="Contact" default="{'sobject': 'Contact'}"/>
+    
+    <aura:registerEvent name="updateContactList" type="c.CreateNewAccountRecordEvent" />
+    
+	<div class="demo-only" style="height: 600px;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-slide-up-saving"> 
+            <div class="slds-modal__container">            
+                <div class="slds-modal__header">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close" class="slds-modal__close" size="large" variant="bare" alternativeText="Close" />
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.headerText}</h2>
+                    </header>
+                    
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    	<Lightning:input aura:id="contactRecord" label="First Name" name="Name" value="{!v.contactRec.Name}" type="text" />
+                        <Lightning:input aura:id="contactRecord" label="Last Name" name="Last Name" value="{!v.contactRec.LastName}" type="text"  required="true"/>                       
+                    </div>
+                    
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="brand" label="Save" title="Save"  onclick="{!c.saveRecord}" />
+                        <lightning:button variant="brand" label="Cancel" title="Cancel"  onclick="{!c.closeModal}" />                         
+                    </footer>
+                </div>
+            </div>                           
+        </section>           
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</aura:component>

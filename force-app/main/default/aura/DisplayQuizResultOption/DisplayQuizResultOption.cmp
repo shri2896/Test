@@ -1,0 +1,47 @@
+<!-- 
+    @ Description :
+    @ Author : Shrikant Mittal
+    @ Date : 27-07-19
+ -->
+
+<aura:component>
+    <aura:attribute name="option" type="object" />
+    <aura:attribute name="correctanswer" type="String" />
+    <aura:attribute name="status" type="String" default="nothing"/>
+    <aura:attribute name="isRadio" type="Boolean" />
+    <aura:registerEvent name="ansStatus" type="c:QuestionModelEvent" />    
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <aura:if isTrue="{!v.status eq 'right'}" >
+        <div style="background: lightgreen;">
+            <aura:if isTrue="{!v.isRadio eq true}" >            
+                <lightning:input type="radio" label="{!v.option.Name}" checked="{!v.option.isChecked}" disabled="true" />                
+                <aura:set attribute="else" >                
+                    <lightning:input type="checkbox"  label="{!v.option.Name}"  name="options" checked="{!v.option.isChecked}" disabled="true"  />                
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.status eq 'wrong'}" >
+        <div style="background: red;">
+            <aura:if isTrue="{!v.isRadio eq true}" >                
+                <lightning:input type="radio" label="{!v.option.Name}" checked="{!v.option.isChecked}" disabled="true" />                                                                
+                <aura:set attribute="else" >                    
+                    <lightning:input type="checkbox"  label="{!v.option.Name}"  name="options" checked="{!v.option.isChecked}" disabled="true"  />                    
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.status == 'nothing'}" >               
+        <aura:if isTrue="{!v.isRadio eq true}" >                        
+            <lightning:input type="radio" label="{!v.option.Name}" checked="{!v.option.isChecked}" disabled="true" />                                                                
+            <aura:set attribute="else" >                    
+                <lightning:input type="checkbox"  label="{!v.option.Name}"  name="options" checked="{!v.option.isChecked}" disabled="true"  />                    
+            </aura:set>
+        </aura:if>
+    </aura:if>
+
+</aura:component>

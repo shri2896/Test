@@ -1,0 +1,18 @@
+<aura:component>
+	<aura:attribute name="objectFields" type="string" />
+
+	<div class="setInline slds-p-left_large">
+		<lightning:buttonIcon iconName="utility:close" variant="neutral" alternativeText="Add" onclick="{!c.addField}"  class="slds-p-bottom_none" />
+	</div>
+	Heellllooo..----{!v.objectFields}--------
+	<!-- <div class="setInline slds-p-left_large">  	                                       				                                                                        				
+		<lightning:select aura:id="getval"  >
+	        <aura:iteration items="{! allFileds }" var="fld" >											                	
+				<option  > 								                                            		
+					{!fld.label}
+	        	</option>											               																               	
+	        </aura:iteration>
+	    </lightning:select>		    									            				                                        					                
+	</div>          -->          
+		                          
+</aura:component>

@@ -1,0 +1,61 @@
+<aura:component controller="GetAccountRecordsForLightningComponent" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+	<aura:attribute name="objName" type="String"/>
+    <aura:attribute name="objFields" type="String[]" default="['Name','AccountNumber', 'Industry', 'AnnualRevenue', 'Phone', 'Sic']"/>
+    <aura:attribute name="kanbanPicklistField" type="String" default="Industry"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:attribute name="kanbanData" type="kanbanWrap"/>
+    
+    <div class="slds-page-header">
+        <div class="slds-media">            
+            <div class="slds-media__body">
+                <lightning:icon iconName="utility:kanban" size="medium" variant="brand" />
+            </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid">
+    	<aura:iteration var="pickVal" items="{!v.kanbanData.pickVals}">
+            <div class="stageContainer KanbanWidth" style="{!'width:calc(100vw/'+(v.kanbanData.pickVals.length+0.5)+')'}" >
+                						
+                <div class="slds-grid slds-grid_vertical" >
+                    <div>
+                        <div class="slds-media slds-no-space slds-has-divider_bottom-space slds-media_center">
+                            <div class="slds-media__body ">
+                                <h1 class="slds-page-header__title slds-align-middle slds-truncate" title="{!pickVal}">{!pickVal}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                	            <ul ondrop="{!c.drop}" ondragover="{!c.allowDrop}" class="slds-has-dividers_around-space dropZone" data-Pick-Val="{!pickVal}" >
+                    <aura:iteration var="objRecord" items="{!v.kanbanData.records}">                        
+                        <aura:if isTrue="{!pickVal == objRecord.Industry}">
+                            <li class="slds-item slds-m-around_small" draggable="true" ondragstart="{!c.drag}" id="{!objRecord.Id}">
+                                <article class="slds-tile slds-tile_board">
+                                    <h3 class="slds-truncate" title="{!objRecord.Name}">
+                                        <a >
+                                            <span class="slds-truncate" >{!objRecord.Name}</span>
+                                        </a>
+                                    </h3>                                    
+                                    
+                                    <div class="slds-tile__detail slds-text-body_small slds-truncate">                                        
+                                    	<p class="slds-text-heading_small">${!objRecord.AnnualRevenue}</p>
+                                    </div>   
+                                    
+                                    <div class="slds-tile__detail slds-text-body_medium slds-truncate">
+                                    	<div style="float:left; display:inline-block">Phone : </div>
+                                        <div style="float:left; display:inline-block" class="changePhoneBackground">{!objRecord.Phone} </div>
+                                    </div>                                                                        
+                                    
+                                </article>
+                            </li>
+                        </aura:if> 
+                    </aura:iteration>
+                </ul>                
+            </div>
+    	</aura:iteration>
+    </div>
+                
+    
+</aura:component>

@@ -1,0 +1,11 @@
+<aura:component >
+    <aura:attribute name="expenses" type="Expense__c[]" default="{'sobjectType': 'Expenses__c', 'Name': 'sHrI', 'Reimbursed__c' : true, 'client__c': 'Suziki', 'amount__c': 0.11}"/>
+    <lightning:card title="Expenses">
+        <p class="slds-p-horizontal--small">
+            <aura:iteration items="{!v.expenses}" var="expense">
+                <c:expenseItem expense="{!expense}"/>
+            </aura:iteration>
+        </p>
+    </lightning:card>
+  
+</aura:component>

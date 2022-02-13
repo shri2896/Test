@@ -1,0 +1,14 @@
+<aura:event type="APPLICATION" description="Event template" >
+	<aura:attribute name="updatedData" type="Integer" />
+    <aura:attribute name="handleNext" type="boolean" />
+    <aura:attribute name="handleFirst" type="boolean" />
+    <aura:attribute name="handleLast" type="boolean" />
+    <aura:attribute name="handlePrev" type="boolean" />
+    <aura:attribute name="pageNo" type="Integer" />
+    <aura:attribute name="searchText" type="Integer" />
+    <aura:attribute name="headerValue" type="String" />
+    
+    <aura:attribute name="lstOfData" type="list" />
+    <aura:attribute name="removeSearching" type="string" />
+    
+</aura:event>

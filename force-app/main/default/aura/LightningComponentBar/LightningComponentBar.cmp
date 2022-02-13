@@ -1,0 +1,68 @@
+<aura:component Controller="GetAccountRecordsForLightningComponent" implements="lightning:isUrlAddressable">
+    <aura:attribute name="rec" type="Account[]" />
+    <aura:attribute name="newRecord" type="Account"/>
+    <aura:attribute name="openModel" type="boolean" default="false"/>
+    <aura:attribute name="isKanbanShow" type="boolean" default="false" />
+    
+    <aura:attribute name="RecordStart" type="Integer" default="0"/>
+    <aura:attribute name="RecordEnd" type="Integer" default="0"/>
+    <aura:attribute name="PageNumber" type="Integer" default="1" />
+    <aura:attribute name="TotalPages" type="Integer" default="0" />
+    <aura:attribute name="TotalRecords" type="Integer" default="0" />
+    <!--temp is use for maintain first and previous button disable conssistence !-->
+    <aura:attribute name="temp" type="Integer" default="1" />
+    <aura:handler name="init" action="{!c.doInit}"  value="{!this}"/>
+    <aura:handler name="CreateNewAccountRecord" event="c:CreateNewAccountRecordEvent" action="{!c.createNewRecord}"/>                       
+    <aura:handler name="updatedData" event="c:CreateNewAccountRecordEvent" action="{!c.updateAccountRecordList}" />
+    <aura:handler name="afterDeleteUpdateContact" event="c:CreateNewAccountRecordEvent" action="{!c.updateCountOfChildRecord}"  />
+    <aura:handler name="updateContactList" event="c:CreateNewAccountRecordEvent" action="{!c.updateCountOfChildRecord}" />
+    
+    <aura:registerEvent name="showEditValueInModel" type="c.CreateNewAccountRecordEvent" />
+    
+    <div class="slds-box slds-theme_shade" style="background:rgb(67,92,252);">
+        <lightning:button label="New"  class="slds-m-top--medium"  variant="brand" onclick="{!c.openModel}" />   
+        <lightning:button label="Bulk Account" class="slds-m-top--medium" variant="brand" onclick="{!c.bulkAccount}" />
+        <lightning:button label="Kanban" class="slds-m-top--medium" variant="brand" onclick="{!c.navigateToKanban}"/>
+    </div>     
+    
+    <aura:if isTrue="{!v.isKanbanShow}" >             
+        	
+        <c:Kanban objName="Account" />
+        
+        <aura:set attribute="else">
+        	<aura:iteration items="{!v.rec}" var="recs">   		                        
+            	<c:ShowAccountRecords singleRec="{!recs}"/> 
+            </aura:iteration>	
+        </aura:set>
+        
+    </aura:if>
+    
+    <br/>
+    <br/>
+
+    <div class="slds-m-top_xxx-small">        
+        <div style="display:inline-block">
+            <ui:inputSelect aura:id="pageSize" label="Display Records Per Page: " change="{!c.onSelectChange}">
+                <ui:inputSelectOption text="10" label="10" value="true"/>
+                <ui:inputSelectOption text="15" label="15"/>
+                <ui:inputSelectOption text="20" label="20"/>
+            </ui:inputSelect>           
+        </div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <div style="display:inline-block">          
+            <lightning:button disabled="{!v.PageNumber == 1}" aura:id="firstPage" variant="brand" label="First" onclick="{!c.handleFirst}"/>     
+            <lightning:button disabled="{!v.PageNumber == v.TotalPages}" aura:id="nextPage" variant="brand" label="Next" onclick="{!c.handleNext}"/> 
+            <lightning:button disabled="{!v.PageNumber == 1}" variant="brand" aura:id="prevPage" label="Prev" onclick="{!c.handlePrev}" />           
+            <lightning:button disabled="{!v.PageNumber == v.TotalPages}" aura:id="lastPage" variant="brand" label="Last" onclick="{!c.handleLast}"/>                
+        </div>
+
+        <div style="float: right; display:inline-block">
+            <p class="slds-page-header__title">{!v.RecordStart}-{!v.RecordEnd} of {!v.TotalRecords} | Page   <Lightning:input aura:id="" value="{!v.temp}" type="text"  class="setWidthOfInputText" style="display:inline-block" onblur="{!c.goto}" /> of {!v.TotalPages}</p>           
+        </div>
+    
+    </div>
+    
+
+    <div aura:id="showChildModal" />
+    <div aura:id="bulkAccount" />
+         
+</aura:component>

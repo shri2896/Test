@@ -1,0 +1,4 @@
+<aura:component >
+    <aura:attribute name = "abc" type = "String" ></aura:attribute>
+	<h3> W E L C O M E</h3>
+</aura:component>

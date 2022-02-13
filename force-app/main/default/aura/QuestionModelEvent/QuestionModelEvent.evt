@@ -1,0 +1,8 @@
+<aura:event type="Component" description="Event template" >
+	<aura:attribute name="totalQuestion" type="Integer" description="Sened total question from show question Component to question_Answer Component" />
+	<aura:attribute name="confirmation" type="Boolean" default = "false" />
+	<aura:attribute name="ansStatus" type="Boolean" /> <!-- use in Displayquizresultoption & Allquizquestion component for send question right or wrong status -->
+	<aura:attribute name="correctAnswer" type="List" /> <!-- use in AllQuizQuestion & QuizResult component for send right ans list to quizresult component -->
+	<aura:attribute name="wrongAnswer" type="List" /> <!-- use in AllQuizQuestion & QuizResult component for send wrong ans list to quizresult component -->
+	<aura:attribute name="selectedQuestion" type="List" /> <!-- use in DisplayQuestionPanel & ShowQuestion component for send selected question from  DisplayQuestionPanel to ShowQuestion component-->
+</aura:event>

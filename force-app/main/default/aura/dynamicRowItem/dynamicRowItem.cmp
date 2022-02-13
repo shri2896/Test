@@ -1,0 +1,107 @@
+<aura:component >
+    <aura:attribute name="AccountInstance" type="Account" />
+    <aura:attribute name="rowIndex" type="String" />
+    <aura:attribute name="isDisable" type="Boolean" default="false"/>
+    
+    <aura:registerEvent name="DeleteRowEvt" type="c:CreateNewAccountRecordEvent"/> 
+    <aura:registerEvent name="AddRowEvt" type="c:CreateNewAccountRecordEvent"/> 
+    <aura:registerEvent name="cloneRowEvt" type="c:CreateNewAccountRecordEvent" />
+    
+     <tr class="slds-text-title_caps" id="disable">
+         <td id="tbId"> 
+             {!v.rowIndex }
+         </td>
+         <td>
+             <ui:inputText class="slds-input" value="{!v.AccountInstance.Name}" required="true"  disabled="{!v.isDisable}" />
+         </td>
+         <td>
+             <ui:inputText class="slds-input" value="{!v.AccountInstance.AccountNumber}" disabled="{!v.isDisable}" />
+         </td>
+         <td>
+             <ui:inputText class="slds-input" value="{!v.AccountInstance.Phone}" disabled="{!v.isDisable}" />
+         </td>  
+         <td>             
+             
+             <aura:if isTrue="{!v.rowIndex == 0}" >  
+               
+                    <lightning:icon iconName="utility:chevronleft" class="slds-icon slds-icon_small" size="small" onclick="{!c.enableDisableRow}" /> 
+	           
+                 
+                <lightning:button label="Clone" variant="brand" onclick="{!c.handleClone}" />
+            	
+               	<a onclick="{!c.addNewRow}" >
+                    <lightning:icon iconName="utility:add" class="slds-icon slds-icon_small" size="small"/>
+                    <span class="slds-assistive-text">Add Icon</span>
+                </a>
+                 <aura:set attribute="else" >
+       
+                    	<lightning:icon iconName="utility:chevronleft" class="slds-icon slds-icon_small" size="small" onclick="{!c.enableDisableRow}" /> 
+	           		                                     
+                     <lightning:button label="Clone" variant="brand" onclick="{!c.handleClone}" />
+                     <a onclick="{!c.removeRow}" >
+                         <lightning:icon iconName="utility:delete" class="slds-icon slds-icon_small" size="small" />
+                         <span class="slds-assistive-text">Delete Icon</span>
+                     </a>                 
+                 </aura:set>
+             </aura:if>         	
+         </td>
+    </tr>
+    
+</aura:component>
+
+
+<!-- 
+ var data = component.get("v.data");
+        var header = component.get("v.header");  
+        var tblData = [];
+        
+        for(var i=0; i<header.length; i++){
+            var key = header[i];
+            
+            for(var j=0; j<data.length; j++){
+                var lstOfData = data[j];
+                var obj = new Object();
+                
+                obj.key = key;
+                    
+                for(var k=0; k<lstOfData.length; k++){
+                    obj.val = lstOfData[i]; 
+                }
+                tblData.push(obj);
+                console.log("Data : " + JSON.stringify(obj))
+            }
+        }
+        component.set("v.data", tblData);
+ -->
+
+
+ <!-- 
+<c:FileApproveDataTable header="{!v.header}" data="{!v.data}"/>  
+  -->
+
+
+  <!-- 
+
+console.log("header : " + JSON.stringify(component.get("v.data")))
+        var data = component.get("v.data");
+        var header = component.get("v.header");  
+        var tblData = [];
+        
+        for(var i=0; i<header.length; i++){
+            var key = header[i];
+            
+            for(var j=0; j<data.length; j++){
+                var lstOfData = data[j];
+                var obj = new Object();
+                
+                obj.key = key;
+                    
+                for(var k=0; k<lstOfData.length; k++){
+                    obj.val = lstOfData[i]; 
+                }
+                tblData.push(obj);
+                console.log("Data : " + JSON.stringify(obj))
+            }
+        }
+        component.set("v.data", tblData);
+   -->

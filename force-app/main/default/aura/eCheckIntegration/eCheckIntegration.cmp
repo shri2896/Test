@@ -1,0 +1,159 @@
+<aura:component controller="AuthorizeDotNetController">
+
+	<aura:attribute name="items" type="List" />
+	<aura:attribute name="price" type="Decimal" />
+
+	<lightning:card title="">
+		<div class="slds-section slds-is-open" >
+		    <h3 class="slds-section__title" >
+		        <div style = "background-color:#706e6b" class="slds-button slds-section__title-action">	                
+		            <span class="slds-truncate" style = "color:white" title="Section Title">Total Cart Amount</span>
+		        </div>
+		    </h3>
+		    <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+		        <div aura:id = "table" class="slds-m-around_small">
+		            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+		                <thead>
+		                    <tr class="slds-text-heading--label" >
+		                        <th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                            <div class="slds-truncate">
+		                                <b>Item No.</b>
+		                            </div>
+		                        </th>
+		                        <th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                            <div class="slds-truncate">
+		                                <b>Name</b>
+		                            </div>
+		                        </th>
+		                        <th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                            <div class="slds-truncate">
+		                                <b>Price</b>
+		                            </div>
+		                        </th>
+		                        <th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                            <div class="slds-truncate">
+		                                <b>quantity</b> 
+		                            </div>
+		                        </th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                    <aura:iteration items="{!v.items}" var="recordData" indexVar="index">
+		                        <tr>
+		                            <th scope="row" data-label="Name" >
+		                                <div class="slds-truncate" title="">{!recordData.index}</div>
+		                            </th> 
+		                            <aura:iteration items="{!recordData.sObjectData}" var="data" indexVar="ind">
+		                                <aura:if isTrue="{!ind != 1}">
+		                                    <th scope="row" data-label="Name" >
+		                                        <div class="slds-truncate" title="">{!data.fields}</div>
+		                                    </th> 
+		                                </aura:if>
+		                            </aura:iteration>
+		                        </tr>
+		                    </aura:iteration> 
+		                </tbody>
+		            </table>
+		        </div >
+		        <lightning:layout  class="slds-m-around_small slds-grid slds-wrap">
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <div class = "slds-text-align_center"><b>Total Amount</b></div>
+	                </lightning:layoutItem>
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    
+	                    <div class = "slds-text-align_center"><ui:outputCurrency value="{!v.price}"/></div>
+	                </lightning:layoutItem>
+	            </lightning:layout>
+			</div> 		
+		</div>     
+
+		<div class="slds-section slds-is-open">
+	        <h3 class="slds-section__title" >
+	            <button style = "background-color:#706e6b" aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+	                
+	                <span class="slds-truncate" style = "color:white" title="Section Title">Shipping Address</span>
+	            </button>
+	        </h3>
+	        <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+	            <lightning:layout  class="slds-m-around_small slds-grid slds-wrap">
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <lightning:input maxlength = "255" type = "text" required="true" name="First Name" aura:id="sFname" label="Enter First Name" />
+	                </lightning:layoutItem>
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <lightning:input maxlength = "255" type = "text" required="true" name="Last Name" aura:id="slname" label="Enter Last Name" class="slds-m-left_small"/>
+	                </lightning:layoutItem>
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <lightning:input maxlength = "255" type = "text" required="true" name="Shipping Address" aura:id="shipad" label="Enter Shipping Address" />
+	                </lightning:layoutItem>
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <lightning:input maxlength = "255" type = "text" required="true" name="Shipping city" aura:id="scity" label="Enter Shipping city" class="slds-m-left_small"/>
+	                </lightning:layoutItem>
+	                <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                    <lightning:input mmaxlength = "255" type = "text" required="true" name="Shipping country" aura:id="scountry" label="Enter Shipping country" />
+	                </lightning:layoutItem>	                
+	                
+	            </lightning:layout>
+	        </div>
+	    </div>   
+		
+		<div class="slds-section slds-is-open" >
+	        <h3 class="slds-section__title" >
+	            <div style = "background-color:#706e6b" class="slds-button slds-section__title-action">	                
+	                <span class="slds-truncate" style = "color:white" title="Section Title">Bank Details</span>
+	            </div>
+	        </h3>					
+	        <div aura:id = "table" class="slds-m-around_small">
+	            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+	                <thead>                    
+	                </thead>
+	                <tbody>                    
+	                    <tr>                                                                                        
+	                        <td scope="row" data-label="Name" >
+	                            <div class="slds-truncate" title="">*Name on Account</div>
+	                        </td>
+	                        <td>
+	                        	<div><lightning:input maxlength = "255" type = "text" name="accountName" aura:id="accountName" label="" /></div>
+	                        </td>                                                             
+	                    </tr>                    
+	                    <tr>                                                                                        
+	                        <td scope="row" data-label="Name" >
+	                            <div class="slds-truncate" title="">*Bank Routing</div>
+	                        </td>
+	                        <td>
+	                        	<div><lightning:input maxlength = "255" type = "Number" name="routing" aura:id="routing" label="" /></div>
+	                        </td>                                                             
+	                    </tr>                    
+	                    <tr>                                                                                        
+	                        <td scope="row" data-label="Name" >
+	                            <div class="slds-truncate" title="">*Bank Account Number</div>
+	                        </td>
+	                        <td>
+	                        	<div><lightning:input maxlength = "255" type = "number" name="accountNumber" aura:id="accountNumber" label="" /></div>
+	                        </td>                                                             
+	                    </tr>                    
+	                    <tr>                                                                                        
+	                        <td scope="row" data-label="Name" >
+	                            <div class="slds-truncate" title="">*Confirm Bank Account Number</div>
+	                        </td>
+	                        <td>
+	                        	<div><lightning:input maxlength = "255" type = "number" name="confirmAccountNumber" aura:id="confirmAccountNumber" label="" /></div>
+	                        </td>                                                             
+	                    </tr>                    
+	                    <tr>                                                                                        
+	                        <td scope="row" data-label="Name" >
+	                            <div class="slds-truncate" title="">*Check Number</div>
+	                        </td>
+	                        <td>
+	                        	<div><lightning:input maxlength = "255" type = "text" name="First Name" aura:id="checkNumber" label="" /></div>
+	                        </td>                                                             
+	                    </tr>                          
+	                </tbody>
+	            </table>
+
+	            <center class="slds-m-top_medium"> 
+	            	<lightning:button label="Submit payment" variant="brand" title="Brand action" onclick="{!c.finalPayment}" />
+	        	</center>
+	        </div >
+        </div>	     
+    </lightning:card>      
+</aura:component>

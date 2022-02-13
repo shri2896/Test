@@ -1,0 +1,117 @@
+<aura:component Controller="GetAccountRecordsForLightningComponent">
+    <aura:attribute name="singleRec" type="Account" />
+    
+    <aura:registerEvent name="updatedData" type="c.CreateNewAccountRecordEvent" />
+    
+     <lightning:card title="" >
+        <h1 class="slds-p-horizontal--small">            
+         	<div class="slds-grid ">
+                <div class="slds-size_1-of-6"> 
+                  {!v.singleRec.Name} 
+                </div>
+                <aura:if isTrue="{!v.singleRec.Industry == 'Biotechnology'}" >
+                    <div class="slds-size_1-of-6 " > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Biotechnology"/>
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Energy'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Energy"/>
+                        
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Electronics'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Electronics"/>
+                        
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Apparel'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Apparel" /> 
+                        
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Construction'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Construction" />                         
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Hospitality'}" >
+                    <div class="slds-size_1-of-6 " > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Hospitality" /> 
+                        
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Education'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Education" /> 
+                        
+                    </div>
+            	</aura:if>
+                
+                <aura:if isTrue="{!v.singleRec.Industry == 'Transportation'}" >
+                    <div class="slds-size_1-of-6" > 
+                        <lightning:badge label="{!v.singleRec.Industry}" class="Transportation" />                         
+                    </div>                                      
+            	</aura:if>
+                
+                <aura:if isTrue="{!empty(v.singleRec.Industry)}" >
+                    <div class="slds-size_1-of-6 ">     
+                        <lightning:icon iconName="utility:dash" size="small"/>
+                    </div>                                       
+            	</aura:if>                                                
+                               
+                <div class="slds-size_1-of-6">  
+                    <aura:if isTrue="{!not(empty(v.singleRec.Phone))}">
+                    	{!v.singleRec.Phone}  
+                        <aura:set attribute="else">
+                        	<lightning:icon iconName="utility:dash" size="small"/>
+                        </aura:set>
+                    </aura:if>
+                </div>           
+                
+                <div class="slds-size_1-of-6"> 
+                    <aura:if isTrue="{!empty(v.singleRec.Sic)}">
+
+                        <lightning:icon iconName="utility:dash" size="small"/>
+                        
+                        <aura:set attribute="else">
+                        	{!v.singleRec.Sic}                                                 
+                        </aura:set>
+                    </aura:if>                    
+                </div>
+                	
+                <div class="slds-size_1-of-6" >
+                    <aura:if isTrue="{!empty(v.singleRec.Contacts.length)}" >
+                        <lightning:icon iconName="utility:dash" size="small" />
+                        
+                        <aura:set attribute="else" >
+                        	{!v.singleRec.Contacts.length} 
+                        
+                        </aura:set>
+                    </aura:if>                	
+                </div>
+                
+                <div class="slds-size_1-of-6">
+					<lightning:buttonMenu  aura:id="{!v.singleRec.Id}" alternativeText="Show menu" onselect="{!c.editDelete}">
+                        <lightning:menuItem value="{!join(',', v.singleRec.Id, 'edit')}" label="Edit" iconName="utility:edit"/>
+                        <lightning:menuItem value="{!join(',', v.singleRec.Id, 'delete')}" label="Delete" iconName="utility:delete"/>
+                        <lightning:menuItem value="{!join(',', v.singleRec.Id, 'contact')}" label="Contact" iconName="standard:contact"/>
+                    </lightning:buttonMenu>                	
+                </div>                              
+            </div>                  
+        </h1>                                  
+
+      	<div aura:id="showEditRecordModel" />
+        <div aura:id="ContactRecords" />        
+
+    </lightning:card>
+     
+</aura:component>

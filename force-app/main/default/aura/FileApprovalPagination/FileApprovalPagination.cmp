@@ -1,0 +1,46 @@
+<aura:component>
+	
+	<aura:attribute name="allData" type="list"  />
+	<aura:attribute name="showData" type="list"  /> <!-- list of records which send to table and show on the component -->
+	<aura:attribute name="pageSize" type="Integer"  />
+	<aura:attribute name="recordStart" type="Integer" default="1"/>
+    <aura:attribute name="recordEnd" type="Integer" default="10"/>
+    <aura:attribute name="pageNumber" type="Integer" default="1" />
+    <aura:attribute name="temp" type="Integer" default="1" />
+    <aura:attribute name="totalPages" type="Integer" default="0" />
+    <aura:attribute name="totalRecords" type="Integer" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />    
+
+    <aura:registerEvent name="lstOfData" type="c.FileApprovalEvent" />
+
+    <aura:registerEvent name="updatedData" type="c.FileApprovalEvent" />
+    <aura:registerEvent name="handleNext" type="c.FileApprovalEvent" />
+    <aura:registerEvent name="handleFirst" type="c.FileApprovalEvent" />
+    <aura:registerEvent name="handleLast" type="c.FileApprovalEvent" />
+    <aura:registerEvent name="handlePrev" type="c.FileApprovalEvent" />
+    <aura:registerEvent name="gotoPage" type="c.FileApprovalEvent" />
+
+	<div class="slds-m-top_xxx-small">        
+        <div style="display:inline-block">        	
+            <ui:inputSelect aura:id="pageSize" label="Display Records Per Page:" change="{!c.onSelectChange}">
+                <ui:inputSelectOption text="10" label="10" value="true"/>
+                <ui:inputSelectOption text="15" label="15"/>
+                <ui:inputSelectOption text="20" label="20"/>
+            </ui:inputSelect>           
+        </div>
+
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <div style="display:inline-block">          
+            <lightning:button disabled="{!v.pageNumber == 1}" aura:id="firstPage" variant="brand" label="First" onclick="{!c.handleFirst}"/>     
+            <lightning:button disabled="{!v.PageNumber == 1}" variant="brand" aura:id="prevPage" label="Prev" onclick="{!c.handlePrev}" /> 
+            <lightning:button disabled="{!v.PageNumber == v.TotalPages}" aura:id="nextPage" variant="brand" label="Next" onclick="{!c.handleNext}"/>                      
+            <lightning:button disabled="{!v.PageNumber == v.TotalPages}" aura:id="lastPage" variant="brand" label="Last" onclick="{!c.handleLast}"/>                      
+        </div>
+
+        <div style="float: right; display:inline-block">
+           <p class="slds-page-header__title">{!v.recordStart}-{!v.recordEnd} of {!v.totalRecords} | PageNumber 7737   <Lightning:input aura:id="" value="{!v.pageNumber}" type="text"  class="setWidthOfInputText" style="display:inline-block; width: 80px;" onblur="{!c.gotoPage}"/> of {!v.totalPages}</p>
+        </div>
+        	
+    </div>
+</aura:component>

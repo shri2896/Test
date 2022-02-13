@@ -1,0 +1,119 @@
+<aura:component controller="AuthorizeDotNetController" implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">
+
+<aura:attribute name="listOfRecord" type="List" />
+<aura:attribute name="fields" type = "List"  description = "List of columns" />
+<aura:attribute name="totalPrice" type="Integer" />
+<aura:attribute name="selectedItems" type="List" />
+<aura:attribute name="viewcart" type="Boolean" default="false" />
+<aura:attribute name="eCheck" type="Boolean" default="false" />
+
+<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+	<aura:if isTrue="{! and(v.viewcart eq false, v.eCheck eq false)}" >
+		<div aura:id = "table" class="slds-m-around_small">
+	        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+	            <thead>
+	                <tr class="slds-text-heading--label" >
+	                    <th class="slds-is-sortable slds-text-title--caps " scope="col">
+	                        <div class="slds-truncate">
+	                            <span  title="Name">Index</span> 
+	                        </div>
+	                    </th>
+	                    <aura:iteration items="{!v.listOfRecord}" var="fld" indexVar="index">                    	
+	                        <aura:if isTrue="{!index == 0}">
+	                            <aura:iteration items="{!fld.sObjectData}" var="columns" indexVar="indexx" > 	                            	                           	
+	                                <th class="slds-is-sortable slds-text-title--caps " scope="col">
+	                                    <div class="slds-truncate">	     	                                  	
+	                                    	<aura:if isTrue="{!indexx ==  3}">	                                    		                        	 
+	                                    		<span  title="Name">Quantity</span> 
+	                                    		<aura:set attribute="else" >	                                    			
+	                                        		<span  title="Name">{!columns.fields}</span>
+	                                        	</aura:set>
+	                                        </aura:if>
+	                                    </div>
+	                                </th>
+	                            </aura:iteration>
+	                        </aura:if>
+	                    </aura:iteration>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <aura:iteration items="{!v.listOfRecord}" var="recordData" indexVar="index">
+	                    
+	                    <aura:if isTrue="{!index != 0}">
+	                        <tr>
+	                            <td scope="row" data-label="Name" >
+	                                <div class="slds-truncate" title="">
+	                                    <ui:outputNumber value="{!recordData.index}"/>
+	                                </div>
+	                            </td>
+	                            <aura:iteration items="{!recordData.sObjectData}" var="data" indexVar="ind">
+	                                <th scope="row" data-label="Name" >
+	                                    <aura:if isTrue="{!ind == recordData.sObjectData.length-1}">
+	                                        <div class="slds-truncate" title="">
+	                                            <lightning:input value="" type = "number" min="1" name = "{!recordData.index}" onchange="{! c.calculateTotalPrice }"/></div>
+	                                        <aura:set attribute="else">
+	                                            <div class="slds-truncate" title="">{!data.fields}</div>  
+	                                        </aura:set>
+	                                    </aura:if>
+	                                </th>  
+	                            </aura:iteration>
+	                        </tr>
+	                    </aura:if>
+	                </aura:iteration> 
+	            </tbody>
+	        </table>
+	        
+	        <lightning:layout  class="slds-m-around_small slds-grid slds-wrap">
+	            <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+	                <div class = "slds-text-align_center" ><b>Total Price</b></div>
+	            </lightning:layoutItem >
+	            <lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">            	
+	                <div class = "slds-text-align_center"><ui:outputCurrency value="{!v.totalPrice}"/></div>
+	            </lightning:layoutItem >	        
+	        
+		        <aura:if isTrue="{!v.totalPrice > 0}" >
+		        	<lightning:layoutItem  class="slds-col slds-size--1-of-2 slds-small-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+		        		<lightning:button class="slds-align_absolute-center" variant="brand" label="Pay via credit card" title="Brand action" onclick="{!c.processToPay}" />     
+		        	</lightning:layoutItem>
+
+		        	<lightning:layoutItem  class="slds-col slds-size--1-of-2 slds-small-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+		        		<lightning:button class="slds-align_absolute-center" variant="brand" label="Pay via eCheck" title="Brand action" disabled="false" onclick="{!c.processToPayViaeCheck}"/>     
+		        	</lightning:layoutItem>
+
+		        	<aura:set attribute="else">
+		        		<lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">		        			
+		        			<lightning:button class="slds-align_absolute-center" variant="brand" label="Pay via credit card" title="Brand action" disabled="true" onclick="{!c.processToPay}"/>     
+		        		</lightning:layoutItem>
+		        		<lightning:layoutItem  class="slds-col slds-size--12-of-12 slds-small-size_6-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+		        			<lightning:button class="slds-align_absolute-center" variant="brand" label="Pay via eCheck" title="Brand action" disabled="true" onclick="{!c.processToPayViaeCheck}"/>     
+		        		</lightning:layoutItem>
+		        	</aura:set>
+		        </aura:if>    
+	        </lightning:layout>    	
+    	</div >  
+    </aura:if>      
+
+    <aura:if isTrue="{!v.viewcart}" >		    	
+		<c:ProductPayment item="{!v.selectedItems}" price="{!v.totalPrice}" />
+	</aura:if>
+
+	<aura:if isTrue="{!v.eCheck}" >		
+		<c:eCheckIntegration items="{!v.selectedItems}" price="{!v.totalPrice}" />
+	</aura:if>
+</aura:component>
+
+
+
+
+<!-- 
+Id :- 6nHz85E5
+TRANSACTION key :- 7czWUSqr37J96R7p
+key :- Simon
+
+
+
+New API LOGIN ID :- 4RWtq888
+TRANSACTION KEY :- 7kgB8H87y897WsTx
+KEY :- Simon
+ -->

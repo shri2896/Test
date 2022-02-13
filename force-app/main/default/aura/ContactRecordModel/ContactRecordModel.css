@@ -1,0 +1,10 @@
+.THIS .alignButton{
+    align-items: flex-end;
+}
+.THIS .createButton{
+    float: right;
+}
+
+.THIS .deleteButton{
+   float: left;
+}

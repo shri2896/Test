@@ -1,0 +1,82 @@
+<aura:component controller="ObjectRecordsPaginationInLightning" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    <aura:attribute name="objectList" type="List" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="selectedFields" type="List" />
+    <aura:attribute name="nonSelectedFields" type="List" />
+    <aura:attribute name="values" type="List" />
+    <aura:attribute name="objRecords" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="selectedFieldsData" type="List" />
+    <aura:attribute name="totalPage" type="Integer" default="3"/>
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+    <lightning:card title="">
+        <lightning:layout>
+            <lightning:layoutItem size="9" flexibility="auto" padding="horizontal-medium">
+                <lightning:select label="Select any object" required="true" value="{!v.objectName}" onchange="{!c.getFieldList}">
+                    <aura:iteration items="{!v.objectList}" var="obj" >
+                        <option value="{!obj.value}" text="{!obj.label}"></option>
+                    </aura:iteration>        
+                </lightning:select>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+        <lightning:layout class="slds-m-top_large">
+        	 <aura:if isTrue="{!not(empty(v.objectName))}">
+                <lightning:layoutItem size="6" flexibility="auto" padding="horizontal-medium">                    
+
+            		<lightning:dualListbox name="multipleOptions"  
+                                        label= "Select Fields : " 
+                                        sourceLabel="Available" 
+                                        selectedLabel="Selected" 
+                                        options="{!v.nonSelectedFields}"
+										value="{!v.selectedFields}"                                                                                         
+                                        onchange="{! c.handleChange }"/>
+                    
+                </lightning:layoutItem>
+            </aura:if>
+        </lightning:layout>
+
+        <lightning:layout>
+        	<lightning:layoutItem class="slds-m-top_large">
+        		<lightning:button label="Show Records" variant="brand" onclick="{!c.showRecords}" class="slds-m-left_large"/>
+        	</lightning:layoutItem>
+        </lightning:layout>
+
+        <lightning:layout>
+        	<lightning:layoutItem class="slds-m-top_large"> 
+        		<aura:if isTrue="{!v.objRecords.length > 0}" >
+	        		<lightning:datatable
+			                keyField="id"
+			                data="{! v.objRecords }"
+			                columns="{! v.columns }"
+			                hideCheckboxColumn="true"/>
+	        	</aura:if>
+        	</lightning:layoutItem>
+        </lightning:layout>
+
+        <lightning:layout >
+        	<aura:if isTrue="{!v.objRecords.length eq 0}" >
+	        	<lightning:layoutItem >
+	        		<div style="display:inline-block" class="slds-m-left_large slds-m-top_large">
+	        			<lightning:button label="First" variant="brand" />
+	    			</div>
+	    			<div style="display:inline-block" class="slds-m-left_large slds-m-top_large">
+	    				<lightning:button label="Next" variant="brand" />
+	    			</div>
+	    			<div style="display:inline-block" class="slds-m-left_large slds-m-top_large">
+	    				<lightning:button label="Previous" variant="brand" />
+	    			</div>
+	    			<div style="display:inline-block" class="slds-m-left_large slds-m-top_large">
+	    				<lightning:button label="Last" variant="brand" />
+	    			</div>
+	    			<div  > <!-- class="slds-m-top_xx-small slds-m-left_none" -->
+	    				<div class="slds-m-top_xx-small slds-m-right_none" ><lightning:input type="number" name="Input pageno" /></div>
+	    			</div>
+
+	        	</lightning:layoutItem>
+	        </aura:if>
+        </lightning:layout>
+    </lightning:card>
+</aura:component>

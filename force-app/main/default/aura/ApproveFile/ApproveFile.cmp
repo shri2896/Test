@@ -1,0 +1,90 @@
+<aura:component controller="FileApproveController" implements="forceCommunity:availableForAllPageTypes" access="global">
+    
+    <aura:attribute name="TableContent" type="String"  description=" Show the Result class"/>
+    <aura:attribute name="TargetFileName" type="String"  description="Name of the file"/>
+    <aura:attribute name="tableheaders" type="Object[]" />
+    <aura:attribute name="fileContentData" type="String"/>
+    <aura:attribute name="filename" type="String"/>
+    <aura:attribute name="searchData" type="list" />  
+    <aura:attribute name="tempData" type="list" /> <!-- use for store all data when user click on the table header and searh data on the particular table header -->  
+    <aura:attribute name="filterHeader" type="list" />
+    <aura:attribute name="tempHeader" type="list" />    
+    
+    <!-- Pagination attribute -->    
+    <aura:attribute name="recordStart" type="Integer" default="1"/>
+    <aura:attribute name="recordEnd" type="Integer" default="0"/>
+    <aura:attribute name="pageNumber" type="Integer" default="1" />
+    <aura:attribute name="totalPages" type="Integer" default="0" />
+    <aura:attribute name="totalRecords" type="Integer" default="0" />
+    <aura:attribute name="pageSize" type="Integer" default="10" />
+    <aura:attribute name="tempPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="disable" type="Boolean" default="true" />   <!-- use for disable first and last button-->
+    <aura:attribute name="and" type="list" />
+    
+    <aura:attribute name="header" type="List" />
+    <aura:attribute name="allData" type="List" />
+    <aura:attribute name="showData" type="List" />
+    <!-- It will display 100 records . Change for your requirement-->
+    <aura:attribute name="NumOfRecords" type="Integer" default="10"/> 
+    <aura:attribute name="showMain" type="Boolean" default="true"/>    
+	    
+    <aura:handler name="searchText" event="c.FileApprovalEvent" action="{!c.getSearchValue}" />
+    <aura:handler name="removeSearching" event="c.FileApprovalEvent" action="{!c.removeSearchingFromHeader}" />
+        <div>
+            <aura:if isTrue="{!v.showMain}">
+                <div  class="slds-m-around--large" ondragover="{!c.onDragOver}" ondrop="{!c.onDrop}" >
+                 
+                 <div aura:id="holder" class="slds-m-top--medium slds-align--absolute-center" style="background-color:#bfbfb2; height:100px" >
+                     <h1>Drag and Drop CSV file here</h1>
+                 </div>
+                </div>
+                <aura:set attribute="else">
+                     <ui:outputRichText class="uiOutputRichText slds-m-around--large" value="{!v.TargetFileName}"/> 
+                     <ui:outputRichText class="uiOutputRichText slds-m--around-large" value="{!v.TableContent}"/>
+                
+                     <div class="slds-p-around--large slds-align--absolute-center">                                               
+                        <!-- <lightning:button label="Cancel" variant="brand" onclick="{!c.cancel}" /> --> 
+                     </div>
+                 
+                </aura:set>
+            </aura:if>
+        </div>
+
+         <div>             
+            <aura:if isTrue="{!v.showData.length > 0}" >
+                <!-- <c:MappingOfAccountRecord tableHeader="{!v.header}" /> -->                
+               <c:FileApproveDataTable header="{!v.header}" data="{!v.showData}" aura:id="childComp" /> 
+               <div class="slds-m-top_xxx-small">        
+                    <div style="display:inline-block; color:slategrey;">          
+                        <ui:inputSelect aura:id="pageSize" label="Display Records Per Page:" disabled="true">
+                            <ui:inputSelectOption text="10" label="10" value="true"/>
+                            <ui:inputSelectOption text="15" label="15"/>
+                            <ui:inputSelectOption text="20" label="20"/>
+                        </ui:inputSelect>           
+                    </div>
+
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;                    
+                    <div style="display:inline-block">
+                        <!-- <lightning:button disabled="{!v.pageNumber eq 1}" aura:id="firstPage" variant="brand" label="First" onclick="{!c.handleFirst}"/>     
+                        <lightning:button disabled="{!v.pageNumber eq 1}" variant="brand" aura:id="prevPage" label="Prev" onclick="{!c.handlePrev}" />  -->
+                        <lightning:button disabled="{!v.disable eq true}" aura:id="firstPage" variant="brand" label="First" onclick="{!c.handleFirst}"/>     
+                        <lightning:button disabled="{!v.disable eq true}" variant="brand" aura:id="prevPage" label="Prev" onclick="{!c.handlePrev}" /> 
+
+                        <lightning:button disabled="{!v.pageNumber eq v.totalPages}" aura:id="nextPage" variant="brand" label="Next" onclick="{!c.handleNext}"/>                      
+                        <lightning:button disabled="{!v.pageNumber eq v.totalPages}" aura:id="lastPage" variant="brand" label="Last" onclick="{!c.handleLast}"/>                      
+                    </div>
+
+                    <div style="float: right; display:inline-block">
+                       <p class="slds-page-header__title">{!v.recordStart}-{!v.recordEnd} of {!v.totalRecords} | Page  <Lightning:input aura:id="" value="{!v.tempPageNumber}" type="text"  class="setWidthOfInputText" style="display:inline-block; width: 80px;" onblur="{!c.getPageNo}"/> of {!v.totalPages}</p>
+                    </div>                    
+                        
+                </div>               
+            </aura:if>
+        </div> 
+
+</aura:component>
+
+
+<!-- 
+ 
+ -->

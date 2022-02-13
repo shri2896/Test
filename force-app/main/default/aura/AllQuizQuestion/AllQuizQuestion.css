@@ -1,0 +1,14 @@
+.THIS .SetOptionFont {
+    font-family: sans-serif; 
+    font: caption;
+    font-size: large;
+}
+
+
+.THIS .setQuestionFont{
+    display: inline-block;
+    font: caption;
+    font-family: sans-serif;
+    font-size: large;
+    font-style: initial;
+}

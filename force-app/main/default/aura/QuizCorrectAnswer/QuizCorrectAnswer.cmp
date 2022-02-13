@@ -1,0 +1,55 @@
+<!--
+* @ Description : Child component of QuizResult component
+* @ Author : Shrikant Mittal
+* @ Date : 17-07-19
+ -->
+
+<aura:component>
+    <aura:attribute name="correctAnswerList" type="List" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <div class="slds-m-top_medium">
+        <aura:iteration items="{!v.correctAnswerList}" var="itm" indexVar="index">
+            <div class="slds-grid">
+                <div class="slds-m-top_medium setQuestionFont">
+                    {!index+1}) 
+                </div>
+                
+                <div class="slds-m-top_medium setQuestionFont slds-m-left_small">
+                    <ui:outputRichText aura:id="que" value="{!itm.question.Question__c}" />
+                </div>
+            </div>
+
+            <div class="slds-box slds-m-_medium slds-m-top_medium">
+                <aura:iteration items="{!itm.option}" var="option" indexVar="optionIndex">
+                    <div class="slds-m-top_medium" >
+                        <div class=" slds-m-left_xx-small">
+                            <div style="display: inline-block" class="SetOptionFont">
+                                {!optionIndex+1})                    
+                            </div>
+                            
+                            <div style="display: inline-block" class="slds-m-left_medium">
+                                <aura:if isTrue="{!itm.question.Question_has_single_ans__c eq true}" >
+                                    <div class="SetOptionFont slds-grid"> 
+                                        <div> <lightning:input type="radio" checked="{!option.isChecked}" disabled="true" /> </div> 
+                                        <div> <lightning:formattedRichText value="{!option.Name}" /> </div>
+                                    </div>
+                                    <aura:set attribute="else" >
+                                        <div class="SetOptionFont slds-grid" >
+                                            <div><lightning:input type="checkbox" checked="{!option.isChecked}" disabled="true" /></div>
+
+                                            <div>
+                                                <lightning:formattedRichText value="{!option.Name}"/>
+                                            </div>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>
+                </aura:iteration>
+            </div>
+        </aura:iteration>
+    </div>
+</aura:component>

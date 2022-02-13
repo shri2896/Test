@@ -1,0 +1,94 @@
+<aura:component controller="GoogleDriveIntegrationInLightning" implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">	
+    
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="accessToken" type="String" /> <!-- Store accessToken -->    
+    <aura:attribute name="listOfFile" type="list" /> 	<!-- Store list of file of current folder-->
+    <aura:attribute name="listOfFolder" type="list" />  <!-- Store list of folder of current directory -->
+    <aura:attribute name="fileName" type="String"/> 	<!-- Use for store File Name -->
+    <aura:attribute name="folderId" type="String" default='root'/> <!-- Store current folder id id no folder is selected then root is default -->
+
+	<lightning:card title="">		    	
+		<p class="align-Center"> Google Drive Integration  </p>
+        <aura:if isTrue="{! not(empty(v.accessToken))}" >
+        	<lightning:button variant="brand" label="Home" title="Home" onclick="{! c.goToRootFolder }" /> <!-- Navigate to home folder from current directory -->
+        </aura:if>                
+        <!-- Folder list -->
+        <div class="slds-m-top_large slds-grid" >
+	        <aura:if isTrue="{!v.listOfFolder.length > 0}" > <!-- if folder list size is greater than 0 than table will be show -->
+		        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+				  	<thead>
+					    <tr class="slds-line-height_reset">
+					    	<th class="" scope="slds-col slds-size_1-of-2">
+					        	<div class="slds-truncate" title="Folder Name">Folder Name</div>
+				      		</th>		      
+
+					      	<th class="" scope="slds-col slds-size_1-of-2">
+					        	<div class="slds-truncate" title="Delete Folder">Delete Folder</div>
+					      	</th>
+					    </tr>
+				  </thead>
+
+				 	<tbody>
+				 		<aura:iteration items="{!v.listOfFolder}" var="folder" >  <!-- Iterate all folder list -->
+						    <tr class="slds-hint-parent">		      
+						      	<td data-label="Account Name" class="slds-col slds-size_1-of-2">
+							    	<div class="slds-truncate" title="Cloudhub"><a href="javascript:void(0)" name="{!folder.id}" onclick="{!c.getFolder}">{!folder.name} </a> </div>
+							    </td>		      
+							    <td class="slds-col slds-size_2-of-2">
+							    	<lightning:buttonIcon iconName="utility:delete" variant="neutral"  size="large" value="{!folder.id}" onclick="{!c.deleteFolder}"/>					    	
+							    </td>
+						    </tr>		    		    
+						</aura:iteration>
+				  	</tbody>
+				</table>
+			</aura:if>
+		</div>
+
+		<!-- Show table of all files -->
+		<div class="slds-m-top_xx-large slds-grid">
+			<aura:if isTrue="{!v.listOfFile.length > 0}" >
+		        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+				  	<thead>
+					    <tr class="slds-line-height_reset">					    	
+					    	<th class="" scope="slds-col">
+					        	<div class="slds-truncate" title="Folder Name">File Name</div>
+				      		</th>		      
+				      					      	
+					      	<th class="" scope="slds-col">
+					        	<div class="slds-truncate" title="Delete Folder">Delete File</div>
+					      	</th>
+
+							<th class="" scope="slds-col">
+					        	<div class="slds-truncate" title="Download File">Download File</div>
+					      	</th>					      	
+				      	
+					    </tr>
+				  </thead>
+
+				 	<tbody>
+				 		<aura:iteration items="{!v.listOfFile}" var="file" >  	<!-- Iterate all list of file  -->
+						    <tr class="slds-hint-parent">		      						    	
+						      	<td data-label="Account Name">
+							    	<div class="slds-truncate" title="Cloudhub">{!file.name}</div>
+							    </td>								    
+							    <td >
+							    	<lightning:buttonIcon iconName="utility:delete" variant="neutral"  size="large" value="{!file.id}" onclick="{!c.deleteFolder}"/>					    	
+							    </td>
+							    <td>
+							    	<lightning:buttonIcon iconName="utility:download" variant="neutral"  size="large" value="{!file.id}" onclick="{!c.downloadFile}"/>
+							    </td>								
+						    </tr>		    		    
+						</aura:iteration>
+				  	</tbody>
+				</table>
+			</aura:if>
+		</div>
+
+		<div class="slds-m-top_large"> 			
+			<p class="slds-p-horizontal_small">		            					
+				<lightning:input aura:id="fileId" onchange="{!c.dataFileUpload}" type="file" name="file" label="Upload Attachment" multiple="false"/> <!-- Input file..Max size 4.5MB -->
+		  	</p>	      
+	  </div>
+    </lightning:card>
+    
+</aura:component>

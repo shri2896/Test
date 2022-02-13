@@ -1,0 +1,131 @@
+<aura:component controller="KanbanController" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+	         
+    <aura:attribute name="AccountsSourceList" type="List" />   
+    <aura:attribute name="AccountsDestinationList" type="List" />   
+    <aura:attribute name="listName" type="String" />
+    <aura:attribute name="showSelectedData" type="List" default="[]"/>
+    <aura:attribute name="dragElement" type="Integer"/>
+    <aura:attribute name="selectedRecord" type="Integer"/>
+    <aura:attribute name="SelectedData" type="List" />
+	<aura:attribute name="lastIndex" type="Integer"/>
+	<aura:attribute name="includeIndex" type="List"/>
+	<aura:attribute name="dragData" type="Object"/>
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+
+    <lightning:card title="">
+	    <div class="slds-grid slds-wrap">
+	    	<div class="slds-col  slds-large-order_1 slds-box setScroll"  >
+	    		<center> <b> AccountRecords </b> </center>
+		    	<ul ondrop="{!c.drop}" ondragover="{!c.allowDrop}" class="slds-has-dividers_around-space dropZone list1" data-Pick-Val="{!v.AccountsSourceList}" onkeypress="{!c.keyCheck}">
+		            <aura:iteration var="objRecord" items="{!v.AccountsSourceList}" indexVar="index">
+		            	<!-- if records isSelected attribute is true than  data's background color will be change using changeSelectedRowColor this class-->
+		            	<!-- list1 is just add for getting current class name in controller for checking drag and drop in the same class -->
+			            <aura:if isTrue="{!objRecord.isSelected}" >
+			            	
+			            	<li class="slds-item slds-m-around_small changeSelectedRowColor list1"  title="list1" data-drag-id="{!index}" draggable="true" ondragstart="{!c.drag}" id="{! objRecord.Id}" onclick="{!c.itemSelected}" data-produto="list1" value="{!index}" >	                            
+                                <h3 class="slds-truncate list1" title="{!objRecord.Name}" value="{!index}" name="list1">                                       
+                                   <div value="list1" data-drag-id="{!index}">
+                                   		{!objRecord.Name}
+                                   	</div>
+                                </h3>  	                            
+	                        </li>
+
+			            	<aura:set attribute="else" >
+			            		<li class="slds-item slds-m-around_small list1" draggable="true" title="list1" ondragstart="{!c.drag}" id="{! objRecord.Id}" onclick="{!c.itemSelected}" data-produto="list1" value="{!index}">
+		                            <article class="slds-tile slds-tile_board list1">
+		                                <h3 class="slds-truncate list1" title="{!objRecord.Name}" value="{!index}">                                       
+		                                    <div value="list1" data-drag-id="{!index}">
+		                                    	{!objRecord.Name}
+		                                    </div>
+		                                </h3>  
+		                            </article>
+		                        </li>
+			            	</aura:set>
+
+			            </aura:if>			           
+		            </aura:iteration>
+		        </ul>                
+		    </div>
+
+		    <!-- List 2 data -->		    
+		    <div class="slds-col slds-order_1  slds-box slds-m-left_medium list2 setScroll ">		    
+		    	<center> <b> Selected Records </b></center>
+		    	<ul ondrop="{!c.drop}" ondragover="{!c.allowDrop}" class="slds-has-dividers_around-space dropZone list2" data-Pick-Val="{!v.AccountsDestinationList}" >
+		            <aura:iteration var="objRecord" items="{!v.AccountsDestinationList}" indexVar="index">                           
+		                
+		                <aura:if isTrue="{!objRecord.isSelected}">
+				            <li class="slds-item slds-m-around_small changeSelectedRowColor list2" title="list2" draggable="true" ondragstart="{!c.drag}" id="{! objRecord.Id}" value="{!index}" data-produto="list2" onclick="{!c.itemSelected}" >				                
+			                    <h3 class="slds-truncate list2" title="{!objRecord.Name}">
+			                        <div data-drag-id="{!index}">
+			                        	{!objRecord.Name}
+			                        </div>
+			                    </h3>				                
+				            </li> 
+
+				            <aura:set attribute="else">
+				            	<li class="slds-item slds-m-around_small list2" draggable="true" title="list2" ondragstart="{!c.drag}" id="{! objRecord.Id}" value="{!index}" data-produto="list2" onclick="{!c.itemSelected}" >					                
+				                    <h3 class="slds-truncate list2" title="{!objRecord.Name}">
+				                        <div data-drag-id="{!index}" id="{!index}" >{!objRecord.Name}</div>
+				                    </h3>	                    					                
+					            </li> 
+				            </aura:set>
+
+				        </aura:if>
+		            </aura:iteration>
+		        </ul>                
+	    	</div>	    	
+	    </div>
+	    
+	    <!-- Show data of the list2 in the table. -->
+	    <div style="text-align:center" class="slds-m-top_medium setScroll" >	    
+    		<lightning:button label="Show Data" variant="brand" onclick="{!c.showData}" />	    	
+	    </div>
+	    <div class="slds-m-top_medium setScroll">
+	    	<aura:if isTrue="{!v.showSelectedData.length > 0}" >
+		    	<div aura:id = "table" class="slds-m-around_small">
+		            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+		                <thead>      
+		                	<th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                        <div class="slds-truncate">
+		                            <span  title="Name">Name</span> 
+	                        	</div>
+	                    	</th>
+
+	                    	<th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                        <div class="slds-truncate">
+		                            <span  title="Name">Account Number</span> 
+	                        	</div>
+	                    	</th>
+
+	                    	<th class="slds-is-sortable slds-text-title--caps " scope="col">
+		                        <div class="slds-truncate">
+		                            <span  title="Name">Industry</span> 
+	                        	</div>
+	                    	</th>
+
+		                </thead>
+		                <tbody>  
+		                	<aura:iteration items="{!v.showSelectedData}" var="acc" >                  
+			                    <tr>                                                                                        
+			                        <td scope="row" data-label="Name" >
+			                            <div class="slds-truncate" title="">{!acc.Name}</div>
+			                        </td>
+			                        <td scope="row" data-label="Name" >
+			                            <div class="slds-truncate" title="">{!acc.AccountNumber}</div>
+			                        </td>
+			                        <td scope="row" data-label="Name" >
+			                            <div class="slds-truncate" title="">{!acc.Industry}</div>
+			                        </td>
+
+			                    </tr>
+			                </aura:iteration>
+		                </tbody>
+		            </table>		            
+		        </div >
+		    </aura:if>
+	    </div>
+	</lightning:card>
+    
+</aura:component>

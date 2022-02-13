@@ -1,0 +1,72 @@
+<template>
+    <lightning-card>
+        <div class="slds-progress">
+            <ol class="slds-progress__list" style="top: 20px;">
+                <li class="slds-progress__item" style="background: white">                
+                    <span class="slds-progress__marker"></span>
+                </li>
+                <template for:each={imgToShow} for:item="img" for:index="indexVar">
+                    <li class="slds-progress__item" key={img.id} style="background: white; position: relative;">
+                        <img src={img}/>
+                        <c-progress-bar-child-component index = {indexVar}></c-progress-bar-child-component>
+                    </li>
+                </template>
+            </ol>
+            <div style="border: 2px dashed; color: darkgray"></div>
+        </div>
+        
+        <template if:true = {disableToNext}>
+            <lightning-button label="Next" onclick={onNext} disabled></lightning-button>
+        </template>
+        <template if:false = {disableToNext} >
+            <lightning-button label="Next" onclick={onNext} ></lightning-button>
+        </template>
+
+        <template if:true = {disableToPrevious}>
+            <lightning-button label="Previous" onclick={onPrevious} disabled ></lightning-button>
+        </template>
+        <template if:false = {disableToPrevious} >
+            <lightning-button label="Previous" onclick={onPrevious} ></lightning-button>
+        </template>
+    </lightning-card>
+        
+</template>
+
+
+<!-- 
+
+    <lightning-icon icon-name="action:approval" alternative-text="Approved" ></lightning-icon>
+
+        <svg version="1.1" baseProfile="full" width="300%" height="200%" xmlns="file:///C:/Users/Briskmind/Desktop/LWC%20Progress%20bar/timelineResources/Info_active.svg">
+            <rect width="100" height="100" fill="red"></rect>
+            <circle cx="150" cy="100" r="80" fill="green"></circle>
+            <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+        </svg>
+
+ -->
+
+  <!-- <br></br><div></div>
+    <lightning-progress-indicator current-step="3" type="base" has-error="true" variant="base">
+        <lightning-progress-step label="Step 1" value="1">
+            <img src={customImage}/>
+        </lightning-progress-step>
+
+        <lightning-progress-step label="Step 2" value="2">
+            <button class="slds-button slds-progress__marker">
+                <span class="slds-assistive-text">Step 1 - Active</span>
+            </button>
+        </lightning-progress-step>
+
+        <lightning-progress-step label="Step 3" value="3">
+            <button class="slds-button slds-progress__marker">
+                <span class="slds-assistive-text">Step 1 - Active</span>
+            </button>
+        </lightning-progress-step>
+
+        <lightning-progress-step label="Step 4" value="4">
+            <button class="slds-button slds-progress__marker">
+                <span class="slds-assistive-text">Step 1 - Active</span>
+            </button>
+        </lightning-progress-step>
+
+    </lightning-progress-indicator> -->

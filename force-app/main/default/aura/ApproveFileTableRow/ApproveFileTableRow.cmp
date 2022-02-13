@@ -1,0 +1,6 @@
+<aura:component>
+	 <aura:attribute name="data" type="list" />
+
+	 <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+	 
+</aura:component>

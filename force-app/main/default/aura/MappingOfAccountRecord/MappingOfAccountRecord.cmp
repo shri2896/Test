@@ -1,0 +1,157 @@
+<aura:component>
+	<aura:attribute name="accountFields" type="list" />
+	<aura:attribute name="tableHeader" type="list" />
+
+	
+
+	<div class="demo-only" style="height: 600px;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-slide-up-saving"> 
+            <div class="slds-modal__container">            
+                <div class="slds-modal__header">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close" class="slds-modal__close" size="large" variant="inversive" alternativeText="Close" onclick="{!c.close}" />
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Account Insert</h2>                        
+                    </header>
+                    
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-gutters" id="modal-content-id-1">    
+                    	<div class="slds-col slds-size_1-of-3"> 
+                    		Source Header
+                    	</div>
+                    	<div class="slds-col slds-size_2-of-3">
+                    		Sample Data
+                    	</div>
+                    	<div class="slds-col slds-size_3-of-3">
+                    		Account Field
+                    	</div>                    	
+                    </div>
+
+                    <div class="slds-modal__content slds-p-around_medium" >
+                    	<table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+            <thead>
+                <tr class="slds-text-title_caps">
+                 	<th>
+                 		<lightning:input type="checkbox"  aura:id="checkbox" value="{!v.isAllSelected}"  onchange="{!c.onCheck}" />
+                 	</th>                     
+
+                     <aura:iteration items="{!v.header}" var="headerVal" >
+                        <th scope="col">                             
+                        	<div style="display:inline-block;">{!headerVal.b}</div>                        	
+                        	<div style="display:inline-block; float: right;"  id="{!headerVal.b}" >
+	                        	<aura:if isTrue="{!headerVal.a == true}" >									
+	                        		<lightning:buttonIcon iconName="utility:close" alternativeText="search box" size="small" class="icn" value="utility:close" aura:id="utility:close" onclick="{!c.showSearchModal}"/>
+	                        		<aura:set attribute="else" >
+	                        			<lightning:buttonIcon iconName="utility:search" alternativeText="search box" size="small" class="icn" value="utility:search" aura:id="utility:search" onclick="{!c.showSearchModal}"/>
+	                        		</aura:set>
+	                        	</aura:if>
+	                        </div>                         	
+                         
+                        </th>                                                                                                         
+                    </aura:iteration>
+                 </tr>
+             </thead>
+             <tbody>                 	          	                
+
+	          	<aura:if isTrue="{!v.showData.length > 0}" >
+	           		<aura:iteration items="{!v.showData}" var="lstOfData" indexVar="i">
+	           			<tr class="slds-text-title_caps">
+	           				<td >                                
+	           					<lightning:input type="checkbox" value="{!lstOfData}" aura:id="checkbox" onchange="{!c.getSelectedCheckbox}" checked = "{!lstOfData.checked}" />
+	                     	</td>                         
+
+							<aura:iteration items="{!lstOfData.key}" var="lst" >
+								<td>								
+									<div> {!lst} </div>
+								</td>
+							</aura:iteration>
+						</tr>
+					</aura:iteration>          
+					<aura:set attribute="else" >
+						No data found
+					</aura:set>
+				</aura:if>
+             </tbody>                                                                                            
+         </table>         
+					</div>
+
+                    <footer class="slds-modal__footer">
+                    	<lightning:button variant="brand" label="Save records" title="Search records"  onclick="" />                        
+                        <lightning:button variant="brand" label="close" title="close"  onclick="{!c.close}" />   
+                    </footer>
+                </div>
+            </div>                           
+        </section>           
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+
+</aura:component>
+
+
+<!-- 
+<div >
+	                    	 <lightning:select name="select1" label="">
+						        <option value="">Select...</option>
+						        <aura:iteration items="{!v.tableHeader}" var="header" >
+						        	<option value="{!header}"> {!header} </option>						
+					        	</aura:iteration>        
+						    </lightning:select>      
+
+
+						    <aura:iteration items="{!v.tableHeader}" var="header" >
+					        	{!header.b}<br/> 
+				        	</aura:iteration>        	
+						</div>
+						<div class="slds-col slds-size_2-of-3">
+						
+						</div>
+						
+						<div class="slds-col slds-size_3-of-3">
+						
+						</div>
+
+
+<table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+            <thead>
+                <tr class="slds-text-title_caps">
+                 	<th>
+                 		<lightning:input type="checkbox"  aura:id="checkbox" value="{!v.isAllSelected}"  onchange="{!c.onCheck}" />
+                 	</th>                     
+
+                     <aura:iteration items="{!v.header}" var="headerVal" >
+                        <th scope="col">                             
+                        	<div style="display:inline-block;">{!headerVal.b}</div>                        	
+                        	<div style="display:inline-block; float: right;"  id="{!headerVal.b}" >
+	                        	<aura:if isTrue="{!headerVal.a == true}" >									
+	                        		<lightning:buttonIcon iconName="utility:close" alternativeText="search box" size="small" class="icn" value="utility:close" aura:id="utility:close" onclick="{!c.showSearchModal}"/>
+	                        		<aura:set attribute="else" >
+	                        			<lightning:buttonIcon iconName="utility:search" alternativeText="search box" size="small" class="icn" value="utility:search" aura:id="utility:search" onclick="{!c.showSearchModal}"/>
+	                        		</aura:set>
+	                        	</aura:if>
+	                        </div>                         	
+                         
+                        </th>                                                                                                         
+                    </aura:iteration>
+                 </tr>
+             </thead>
+             <tbody>                 	          	                
+
+	          	<aura:if isTrue="{!v.showData.length > 0}" >
+	           		<aura:iteration items="{!v.showData}" var="lstOfData" indexVar="i">
+	           			<tr class="slds-text-title_caps">
+	           				<td >                                
+	           					<lightning:input type="checkbox" value="{!lstOfData}" aura:id="checkbox" onchange="{!c.getSelectedCheckbox}" checked = "{!lstOfData.checked}" />
+	                     	</td>                         
+
+							<aura:iteration items="{!lstOfData.key}" var="lst" >
+								<td>								
+									<div> {!lst} </div>
+								</td>
+							</aura:iteration>
+						</tr>
+					</aura:iteration>          
+					<aura:set attribute="else" >
+						No data found
+					</aura:set>
+				</aura:if>
+             </tbody>                                                                                            
+         </table>         
+ -->

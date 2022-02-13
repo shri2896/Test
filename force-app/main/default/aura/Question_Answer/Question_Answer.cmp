@@ -1,0 +1,42 @@
+<!-- 
+* @ Description : Child component of QuizInstruction component
+* @ Author : Shrikant Mittal
+* @ Date : 17-07-19
+ -->
+<aura:component controller="Question_AnswerController" implements="force:appHostable,flexipage:availableForAllPageTypes" >
+
+	<aura:attribute name="languageLst" type="List" />
+	<aura:attribute name="selectedLanguage" type="String" />
+	<aura:attribute name="languageName" type="String" />
+	<aura:attribute name="totalQuestions" type="Integer" />
+	<aura:attribute name="hours" type="Integer" />
+	<aura:attribute name="minute" type="Integer" />
+	
+	<aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+	<aura:handler name="totalQuestion" event="c:QuestionModelEvent" action="{!c.getTotalQuestionCount}"/>
+	
+
+	<lightning:card >
+		<div class="slds-grid slds-grid--align-spread slds-align_absolute-center">
+			<div  class="slds-col--padded slds-m-top_medium">
+				<!-- No. of Questions : {!v.totalQuestions}				 -->
+			</div>			
+			<div style="font: caption; font-style: oblique; font-size:large; display:inline-block"> <img src="{!$Resource.SalesforceLogo}" style="height: 10vh;" /> </div>
+			<div class="slds-col" >				
+				<div style="font: caption; font-style: oblique; font-size:large; display:inline-block ">{!v.languageName}</div>				
+			</div>
+
+			<div  class="slds-col--padded slds-m-top_medium">
+				<!-- Max Time 30 min.  -->
+			</div>
+		</div>
+		<div>
+			<aura:if isTrue="{!empty(v.selectedLanguage)}" >
+				<aura:set attribute="else" >
+					<c:ShowQuestions selectedLanguage="{!v.selectedLanguage}" hour="{!v.hours}" minute="{!v.minute}" />
+				</aura:set>
+			</aura:if>
+		</div>		
+
+	</lightning:card>
+</aura:component>

@@ -1,0 +1,92 @@
+<!-- 
+    @ Description : Child component of ShowQuestion component
+    @ Author : Shrikant Mittal
+    @ Date : 26-07-19
+ -->
+
+<aura:component>
+    
+    <aura:attribute name="questionCount" type="Integer" />
+    <aura:attribute name="answeredQuestion" type="List" />
+    <aura:attribute name="correctAnswerList" type="List" />
+    <aura:attribute name="wrongAnswerList" type="List" />
+    <aura:attribute name="resultStatus" type="String" />
+    <aura:attribute name="result" type="Integer" default="0"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+    <aura:handler name="correctAnswer" event="c:QuestionModelEvent" action="{!c.setCorrectAnswer}" />
+    <aura:handler name="wrongAnswer" event="c:QuestionModelEvent" action="{!c.setWrongAnwser}" />
+
+    <div class="slds-grid slds-wrap slds-m-top_xx-large slds-m-left_medium">
+        <div class="slds-col slds-size_12-of-12"> 
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12"> Total Question : </div> 
+                <div class="slds-col slds-size_1-of-12">{!v.questionCount}</div>
+            </div>
+        </div>
+
+        <div class="slds-col slds-size_12-of-12">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12">Question Attempt  </div>
+                <div class="slds-col slds-size_1-of-12">{!v.answeredQuestion.length}</div>
+            </div>
+        </div>
+
+        <div class="slds-col slds-size_12-of-12">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12">Correct Answer  </div>
+                <div class="slds-col slds-size_1-of-12">{!v.correctAnswerList.length}</div>
+            </div>
+        </div>
+
+        <div class="slds-col slds-size_12-of-12"> 
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12">Wrong Answer  </div>
+                <div class="slds-col slds-size_2-of-12" >{!v.wrongAnswerList.length}</div>
+            </div>            
+        </div>
+
+        <div class="slds-col slds-size_12-of-12"> 
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12">Result  </div>
+                <div class="slds-col slds-size_2-of-12" >{!v.result}%</div>
+            </div>            
+        </div>
+
+        <div class="slds-col slds-size_12-of-12"> 
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-12">Result Status  </div>
+                <aura:if isTrue="{!v.correctAnswerList.length eq 0}" >
+                    Fail
+                    <aura:set attribute="else" >
+                        {!v.resultStatus}
+                    </aura:set>
+                </aura:if>                
+            </div>            
+        </div>
+    </div>
+
+    <div class="slds-align_absolute-center slds-m-top_large slds-m-left_xx-large">
+        <lightning:tabset selectedTabId="one">            
+            <lightning:tab label="All Questions" id="one">                                
+                <aura:if isTrue="{!v.answeredQuestion.length > 0}" >                    
+                    <c:AllQuizQuestion questionList="{!v.answeredQuestion}" />
+                </aura:if>
+            </lightning:tab>
+
+            <lightning:tab label="Correct Answer" id="two">
+                <c:QuizCorrectAnswer correctAnswerList="{!v.correctAnswerList}" />
+            </lightning:tab>
+
+            <lightning:tab label="Wrong Answer" id="three">
+                    <c:QuizCorrectAnswer correctAnswerList="{!v.wrongAnswerList}" />
+            </lightning:tab>
+            
+
+
+        </lightning:tabset>
+    </div>
+
+
+</aura:component>

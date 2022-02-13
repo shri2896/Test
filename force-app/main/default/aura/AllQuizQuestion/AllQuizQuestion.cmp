@@ -1,0 +1,110 @@
+<!-- 
+    @ Description : Child component of  QuizResult Component
+    @ Author : Shrikant Mittal
+    @ Date : 26-07-19
+ -->
+
+<aura:component>
+    <aura:attribute name="questionList" type="List"  />
+    <aura:attribute name="answerstatus" type="String" default="Correct" />
+
+    <aura:handler name="init" action="{!c.doInit}"  value="{!this}" />
+    <aura:handler name="ansStatus" event="c.QuestionModelEvent" action="{!c.checkQuestionRightOrWrong}" />
+
+    <aura:registerEvent name="correctAnswer" type="c:QuestionModelEvent" />
+    <aura:registerEvent name="wrongAnswer" type="c:QuestionModelEvent" />
+    
+    <aura:iteration items="{!v.questionList}" var="que" indexVar="index">
+        <div class="slds-m-top_medium setQuestionFont" style="font-family: inherit; font-style: oblique; font-size: large;">
+           <ui:outputRichText aura:id="question" value="{! index+1 + ')' + que.question.Question__c}" />
+        </div> 
+        <div class="slds-box slds-m-top_medium">
+            <aura:iteration items="{!que.option}" var="option" indexVar="optionIndex">
+
+                <div class="slds-m-top_medium slds-m-left_medium SetOptionFont">
+
+                    <div style="display: inline-block">{!optionIndex+1}. </div>
+                    
+                    <div style="display: inline-block;" class="slds-m-left_medium">
+                        <aura:if isTrue="{!que.question.Question_has_single_ans__c eq true}" >
+                            <aura:if isTrue="{!option.isWrong eq 'yes'}" >
+                                <div style="background: red">                                    
+                                    
+                                    <div style="display: inline-block">
+                                        <lightning:input type="radio" checked="{!option.isChecked}" disabled="true" />
+                                    </div>
+
+                                    <div style="display: inline-block">
+                                        <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                    </div>
+
+                                </div>
+                            </aura:if>
+
+                            <aura:if isTrue="{!option.isWrong eq 'no'}" >
+                                <div style="background: lightgreen">
+                                    <div style="display: inline-block">
+                                        <lightning:input type="radio" checked="{!option.isChecked}" disabled="true" />
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                    </div>
+                                </div>
+                            </aura:if>
+
+                            <aura:if isTrue="{!option.isWrong eq ''}" >
+                                <div style="display: inline-block">
+                                    <lightning:input type="radio" checked="{!option.isChecked}" disabled="true" />
+                                </div>
+                                <div style="display: inline-block">
+                                    <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                </div>                                
+                            </aura:if>
+
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!option.isWrong eq 'yes'}" >
+                                    <div style="background: red">
+                                        <div style="display: inline-block">
+                                            <lightning:input type="checkbox" checked="{!option.isChecked}" disabled="true" />
+                                        </div>
+                                        <div style="display: inline-block">
+                                            <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                        </div>                                        
+                                    </div>
+                                </aura:if>
+        
+                                    <aura:if isTrue="{!option.isWrong eq 'no'}" >
+                                        <div style="background: lightgreen">
+                                            <div style="display: inline-block">
+                                                <lightning:input type="checkbox" checked="{!option.isChecked}" disabled="true" />
+                                            </div>
+                                            
+                                            <div style="display: inline-block">
+                                                <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                            </div>
+                                        </div>
+                                    </aura:if>
+        
+                                    <aura:if isTrue="{!option.isWrong eq ''}" >
+                                        <div>
+                                            <div style="display: inline-block">
+                                                <lightning:input type="checkbox" checked="{!option.isChecked}" disabled="true" />
+                                            </div>
+                                            
+                                            <div style="display: inline-block">
+                                                <ui:outputRichText aura:id="option" value="{!option.Name}" />
+                                            </div>                                            
+                                        </div>
+                                    </aura:if>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </div>
+            </aura:iteration>
+        </div>        
+        <div class="slds-box slds-m-top_medium" style="font-size: large; font-style: normal; color: black">
+           {!que.answerStatus}
+        </div>
+    </aura:iteration>
+
+</aura:component>

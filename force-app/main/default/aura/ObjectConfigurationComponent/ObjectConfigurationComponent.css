@@ -1,0 +1,15 @@
+.THIS .setInline {
+	display: inline-block;
+}
+
+.THIS .setAlignmentOfButton {
+	float: right;
+}
+
+.THIS .setWidth {
+	width: 100%;
+}
+
+.THIS .changeDivBorderColor {	
+	border-bottom-color : #FF0303
+}

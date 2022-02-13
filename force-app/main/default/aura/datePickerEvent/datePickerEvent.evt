@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Dispatched when a date cell is clicked">
+    <aura:attribute name="value" type="string" description="string value of the selected date" access="global" />
+</aura:event>

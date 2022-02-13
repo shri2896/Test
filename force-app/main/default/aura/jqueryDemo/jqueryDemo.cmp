@@ -1,0 +1,24 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" >
+    
+
+    
+    <ltng:require styles="{!$Resource.BootstrapFile + '/bootstrap-3.3.7-dist/css'}"
+                  scripts="{!join(',', $Resource.jQueryFile + '/jquery-3.3.1.min.js' , 
+                           $Resource.BootstrapFile + '/bootstrap-3.3.7-dist/js/bootstrap.min.js')}" afterScriptsLoaded="{!c.doInit}"/>
+     
+  	<aura:attribute name="inputValue" type="String"/>
+    
+    
+	<lightning:card title = "card title" >
+    	Hello
+        <p>First paragraph</p>
+       <p>Shri second paragraph</p>
+        <p>last second paragraph</p>
+        
+        <p class="slds-m-around--small">{! 'inputValue: ' + v.inputValue}</p>
+        <input title="Just input" value="{! v.inputValue}" />
+        <lightning:input label="lightning input" value="{! v.inputValue}"/>
+        
+       <lightning:button label="Click me" variant="brand" onclick="{! c.buttonHandler }"/>
+    </lightning:card>
+</aura:component>
