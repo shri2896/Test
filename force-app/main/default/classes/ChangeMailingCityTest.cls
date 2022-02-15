@@ -7,41 +7,41 @@
 @isTest
 public class ChangeMailingCityTest {
 	
-    public static testMethod void testUpdateCity(){
-        List<Account> accountLst = new List<Account>();
-        for(Integer i = 0; i < 10; i++){
-            Account acc = new Account();
-            acc.Name = 'shri'+i;
-            acc.Status__c = 'Active';
-            acc.BillingCity = 'Amesterdum';
-            accountLst.add(acc);            
-        }
+    // public static testMethod void testUpdateCity(){
+    //     List<Account> accountLst = new List<Account>();
+    //     for(Integer i = 0; i < 10; i++){
+    //         Account acc = new Account();
+    //         acc.Name = 'shri'+i;
+    //         acc.Status__c = 'Active';
+    //         acc.BillingCity = 'Amesterdum';
+    //         accountLst.add(acc);            
+    //     }
         
-        if(!accountLst.isEmpty()){
-            insert accountLst;
-        }
+    //     if(!accountLst.isEmpty()){
+    //         insert accountLst;
+    //     }
         
-        Contact cont = new Contact();
-        cont.AccountId = accountLst[0].Id;
-        cont.LastName = 'Cont1';
+    //     Contact cont = new Contact();
+    //     cont.AccountId = accountLst[0].Id;
+    //     cont.LastName = 'Cont1';
         
-        insert cont;
+    //     insert cont;
         
-        Opportunity opertunity = new Opportunity();
-        opertunity.AccountId = accountLst[0].Id;
-        opertunity.CloseDate = Date.newInstance(2019, 07, 19);
-        opertunity.StageName = 'Prospecting';
-        opertunity.Name = 'Opp1';
+    //     Opportunity opertunity = new Opportunity();
+    //     opertunity.AccountId = accountLst[0].Id;
+    //     opertunity.CloseDate = Date.newInstance(2019, 07, 19);
+    //     opertunity.StageName = 'Prospecting';
+    //     opertunity.Name = 'Opp1';
 
-        insert opertunity;
+    //     insert opertunity;
         
-        Account acc = [Select ID, Status__c, BillingCity from Account LIMIT 1];
+    //     Account acc = [Select ID, Status__c, BillingCity from Account LIMIT 1];
         
-        acc.BillingCity = 'LA';        
-        insert acc;        
-        acc.Status__c = 'Not Active';
-        acc.BillingCity = 'LA';
+    //     acc.BillingCity = 'LA';        
+    //     insert acc;        
+    //     acc.Status__c = 'Not Active';
+    //     acc.BillingCity = 'LA';
 
-        insert acc;
-    }
+    //     insert acc;
+    // }
 }
